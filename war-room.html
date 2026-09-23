@@ -736,21 +736,25 @@
   #chatSend.chat-cancel-btn{ background:var(--red); color:#fff; font-size:12px; width:auto; min-width:70px; border-radius:8px; }
   #chatSend.chat-cancel-btn::after{ content:none; }
   .chat-cancel-btn:hover{ background:var(--red) !important; }
-  /* Home recommendations stay pinned directly under the chat header,
-     regardless of the selected AI panel height. */
+  /* Home recommendations sit directly above the input, like the
+     original composer layout. The flexible chat space stays above them. */
   #dashboard[data-view="home"] .suggestion-chips{
     display:flex;
     flex:0 0 auto;
     flex-wrap:wrap;
     justify-content:center;
-    align-content:flex-start;
-    align-items:flex-start;
+    align-content:flex-end;
+    align-items:flex-end;
     gap:8px;
     padding:8px 14px 10px;
-    margin:0;
+    margin-top:auto;
+    margin-bottom:0;
     max-width:none;
     width:100%;
     box-sizing:border-box;
+  }
+  #dashboard[data-view="home"] .suggestion-chips[hidden]{
+    display:none !important;
   }
   .chip{
     padding:8px 14px;
@@ -1254,6 +1258,10 @@
           <button class="btn-ghost btn-small" id="homeChatHeightDown" title="Make Home AI chat shorter">−</button>
           <span class="home-size-value" id="homeChatHeightValue">100%</span>
           <button class="btn-ghost btn-small" id="homeChatHeightUp" title="Make Home AI chat taller">+</button>
+        </span>
+        <span class="home-size-group" title="Show or hide recommended AI questions">
+          <span class="home-size-sub">Suggestions</span>
+          <button class="btn-ghost btn-small" id="homeSuggestionsToggle" title="Hide recommended AI questions">Hide</button>
         </span>
       </div>
       <button class="btn-ghost btn-small" id="collapseAllBtn">Collapse all panels</button>
@@ -1984,6 +1992,7 @@ document.querySelectorAll('.nav-item[data-view]').forEach(item => {
 });
 
 setupHomeSizing();
+setupHomeSuggestionsVisibility();
 
 // --- Draggable divider between the content column and the AI chat pane ---
 (function setupSplitResizer(){
@@ -3187,6 +3196,31 @@ function renderHistoryView(){
   `);
 }
 
+let homeSuggestionsHidden = false;
+
+function applyHomeSuggestionsVisibility(){
+  const chips = $('#chips');
+  const toggle = $('#homeSuggestionsToggle');
+  if(!chips || !toggle) return;
+  chips.hidden = homeSuggestionsHidden;
+  toggle.textContent = homeSuggestionsHidden ? 'Show' : 'Hide';
+  toggle.title = homeSuggestionsHidden ? 'Show recommended AI questions' : 'Hide recommended AI questions';
+}
+
+function setupHomeSuggestionsVisibility(){
+  try{
+    homeSuggestionsHidden = localStorage.getItem('warroom_home_suggestions_hidden') === '1';
+  }catch(e){}
+  $('#homeSuggestionsToggle')?.addEventListener('click',()=>{
+    homeSuggestionsHidden = !homeSuggestionsHidden;
+    try{
+      localStorage.setItem('warroom_home_suggestions_hidden', homeSuggestionsHidden ? '1' : '0');
+    }catch(e){}
+    applyHomeSuggestionsVisibility();
+  });
+  applyHomeSuggestionsVisibility();
+}
+
 function renderChips(){
   const suggestions = [
     "Who has the lowest donations?",
@@ -3198,6 +3232,7 @@ function renderChips(){
   document.querySelectorAll('.chip').forEach(chip => {
     chip.addEventListener('click', () => { $('#chatInput').value = chip.textContent; sendChat(); });
   });
+  applyHomeSuggestionsVisibility();
 }
 
 // --- Phase 1: lightweight relevance filtering ----------------------------
