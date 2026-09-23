@@ -1,0 +1,215 @@
+  /* Chat */
+  .chat-panel{ flex:1; display:flex; flex-direction:row; padding: 0; overflow:hidden; position:relative; min-width:0; }
+  .chat-panel.expanded{
+    position: fixed; inset: 20px; z-index: 500; box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+  }
+  @media (max-width: 700px){
+    .chat-panel.expanded{ inset: 8px; }
+    .chat-panel.expanded .chat-messages{ padding: 16px 10px; }
+  }
+  .chat-main{ flex:1; min-width:0; display:flex; flex-direction:column; }
+  .chat-panel.expanded .chat-messages{ padding: 22px clamp(16px, 12%, 160px); }
+  .chat-backdrop{ display:none; position: fixed; inset:0; background: rgba(8,10,14,0.6); z-index: 400; }
+  .chat-backdrop.visible{ display:block; }
+
+  .chat-head{ padding: 16px 18px; border-bottom: 1px solid var(--panel-border); position: relative; flex-shrink:0; }
+  .chat-head-row{ display:flex; align-items:flex-start; justify-content:space-between; gap: 10px; }
+  .chat-head h3{ margin:0; font-size: 14.5px; }
+  .chat-head p{ margin: 4px 0 0; font-size: 11.5px; color: var(--text-faint); }
+  .btn-expand{ background: transparent; border: 1px solid var(--panel-border); color: var(--text-dim); width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-size: 14px; line-height:1; flex-shrink:0; }
+  .btn-expand:hover{ border-color: var(--gold-dim); color: var(--text); }
+  .btn-expand.on{ border-color: var(--gold-dim); color: var(--gold); }
+  .chat-history-toggle{
+    width:auto;
+    min-width:92px;
+    padding:0 9px;
+    font-size:11px;
+    white-space:nowrap;
+  }
+  .col-chat.chat-host-expanded{
+    position:static !important;
+    width:auto !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    transform:none !important;
+    z-index:1000 !important;
+  }
+  .chat-head-btns{ display:flex; gap: 6px; flex-shrink:0; align-items:center; }
+  .ai-provider-select{
+    background: var(--bg-raised); border: 1px solid var(--panel-border); color: var(--text-dim);
+    border-radius: 6px; padding: 5px 6px; font-size: 11.5px; font-family: 'Inter', sans-serif; cursor: pointer;
+  }
+  .ai-provider-select:hover{ border-color: var(--gold-dim); color: var(--text); }
+
+  /* Chat history sidebar — a real slide-out panel like a chat app's, not a small dropdown */
+  .chat-sidebar{
+    width: 250px; flex-shrink:0; background: var(--bg-raised); border-right: 1px solid var(--panel-border);
+    display:flex; flex-direction:column; margin-left: -250px; transition: margin-left .18s ease;
+  }
+  .chat-sidebar.open{ margin-left: 0; }
+  .chat-sidebar-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding: 12px; border-bottom: 1px solid var(--panel-border); flex-shrink:0; }
+  .chat-sidebar-head .btn{ flex:1; }
+  .chat-sidebar-list{ flex:1; overflow-y:auto; padding: 8px; }
+  .chat-sidebar-section-label{ font-size: 10px; text-transform:uppercase; letter-spacing:0.06em; color: var(--text-faint); padding: 10px 8px 4px; }
+  .chat-history-item{ display:flex; align-items:center; justify-content:space-between; gap: 6px; padding: 9px 10px; border-radius: 7px; cursor:pointer; }
+  .chat-history-item:hover{ background: #262c36; }
+  .chat-history-item.active{ background: #2f3644; }
+  .chat-history-item .ch-title{ font-size: 12.5px; color: var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .chat-history-item .ch-date{ font-size: 10px; color: var(--text-faint); margin-top: 2px; }
+  .chat-history-item .ch-btns{ display:flex; gap:4px; flex-shrink:0; }
+  .chat-history-item .ch-pin, .chat-history-item .ch-delete{ background:none; border:none; color: var(--text-faint); cursor:pointer; font-size: 13px; flex-shrink:0; padding:2px; }
+  .chat-history-item .ch-pin.pinned{ color: var(--gold); }
+  .chat-history-item .ch-delete:hover{ color: var(--red); }
+  .chat-history-item .ch-pin:hover{ color: var(--gold); }
+  .chat-history-empty{ color: var(--text-faint); font-size: 12px; padding: 10px; text-align:center; }
+  .chat-messages{ flex:1; overflow-y:auto; padding: 16px 18px; display:flex; flex-direction:column; gap: 12px; }
+  .msg{ font-size: 13px; line-height:1.5; padding: 10px 13px; border-radius: 10px; max-width: 92%; white-space: pre-wrap; }
+  .msg.user{ background: #2a3038; color: var(--text); align-self:flex-end; }
+  .msg.ai{ background: #24303080; border: 1px solid #2c3a3a; color: var(--text); align-self:flex-start; }
+  .msg.ai::before{ content:"War Room AI"; display:block; font-size:10px; color: var(--gold); font-weight:700; margin-bottom:6px; letter-spacing:0.04em; }
+  .msg.ai p{ margin: 0 0 8px; }
+  .msg.ai p:last-child{ margin-bottom: 0; }
+  .msg.ai ul{ margin: 4px 0 10px; padding-left: 18px; }
+  .msg.ai ul:last-child{ margin-bottom: 0; }
+  .msg.ai li{ margin-bottom: 4px; }
+  .msg.ai li::marker{ color: var(--gold-dim); }
+  .msg.ai strong{ color: var(--gold); font-weight: 700; }
+  .msg.sys{ align-self:center; color: var(--text-faint); font-size:12px; }
+  .ai-thinking{ margin-bottom: 10px; border: 1px solid var(--panel-border); border-radius: 8px; background: #1a1f2680; }
+  .ai-thinking summary{ cursor:pointer; list-style:none; padding: 7px 10px; font-size: 11px; color: var(--text-faint); font-weight:600; letter-spacing:0.03em; user-select:none; }
+  .ai-thinking summary::-webkit-details-marker{ display:none; }
+  .ai-thinking summary::before{ content:"▸ "; color: var(--gold-dim); }
+  .ai-thinking[open] summary::before{ content:"▾ "; }
+  .ai-thinking summary:hover{ color: var(--text-dim); }
+  .ai-thinking-body{ padding: 2px 12px 10px; border-top: 1px solid var(--panel-border); font-size: 12px; color: var(--text-faint); }
+  .ai-thinking-body p{ margin: 8px 0 0; }
+  .limit-toast{ position:absolute; left:16px; right:16px; bottom:78px; z-index:60; display:flex; align-items:flex-start; gap:10px; background:#3a2c1c; border:1px solid var(--gold-dim); color:var(--gold); border-radius:10px; padding:12px 34px 12px 14px; font-size:12.5px; line-height:1.5; box-shadow:0 10px 30px rgba(0,0,0,0.45); }
+  .limit-toast[hidden]{ display:none; }
+  .limit-toast .icon{ flex-shrink:0; font-size:15px; line-height:1.3; }
+  .limit-toast .close{ position:absolute; top:8px; right:9px; background:none; border:none; color:var(--gold); opacity:0.7; cursor:pointer; font-size:15px; line-height:1; padding:2px 5px; }
+  .limit-toast .close:hover{ opacity:1; }
+  .chat-input-area{ border-top: 1px solid var(--panel-border); padding: 12px 14px; display:flex; gap: 8px; }
+  .chat-input-area textarea{ resize:none; height: 42px; padding-top:11px; }
+  .suggestion-chips{ display:flex; flex-wrap:wrap; gap:6px; padding: 0 14px 10px; }
+  .chip{ font-size: 11px; color: var(--text-dim); border: 1px solid var(--panel-border); padding: 5px 10px; border-radius: 20px; cursor:pointer; background: transparent; }
+  .chip:hover{ border-color: var(--gold-dim); color: var(--text); }
+
+  /* Chat sizing safeguards: the composer must always fit inside its panel,
+     and expanded mode must be a true viewport-sized overlay rather than
+     inheriting the Home chat's custom width/height. */
+  .chat-input-area{ min-width:0; align-items:flex-end; }
+  .chat-input-area textarea{
+    flex:1 1 auto;
+    min-width:0;
+    width:auto;
+  }
+  .chat-input-area .btn{
+    flex:0 0 auto;
+    min-width:72px;
+    white-space:nowrap;
+  }
+  .chat-panel.expanded{
+    position:fixed !important;
+    top:20px !important;
+    right:20px !important;
+    bottom:20px !important;
+    left:20px !important;
+    width:auto !important;
+    height:auto !important;
+    max-width:none !important;
+    max-height:none !important;
+    min-width:0 !important;
+    min-height:0 !important;
+    margin:0 !important;
+    transform:none !important;
+    z-index:1001 !important;
+    box-sizing:border-box !important;
+  }
+  .chat-panel.expanded .chat-sidebar,
+  .chat-panel.expanded .chat-main{
+    min-height:0;
+    height:100%;
+  }
+  .chat-panel.expanded .chat-messages{
+    min-height:0;
+    overflow-y:auto;
+  }
+  /* Home uses an absolute/translated chat host. In expanded mode the host
+     itself must leave that layout context, otherwise the fixed chat can still
+     inherit the Home containing block and its normal 320px height. */
+  #dashboard[data-view="home"] .col-chat.chat-host-expanded{
+    position:fixed !important;
+    top:20px !important;
+    right:20px !important;
+    bottom:20px !important;
+    left:20px !important;
+    width:auto !important;
+    height:auto !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    transform:none !important;
+    z-index:1001 !important;
+  }
+  #dashboard[data-view="home"] .col-chat.chat-host-expanded .chat-panel.expanded{
+    position:absolute !important;
+    inset:0 !important;
+    width:auto !important;
+    height:auto !important;
+    max-width:none !important;
+    max-height:none !important;
+    min-width:0 !important;
+    min-height:0 !important;
+    margin:0 !important;
+    transform:none !important;
+  }
+
+  /* The Home composer normally reserves a narrow 38px grid column for the
+     round Ask button. Cancel is wider, so give the button its own auto-sized
+     column instead of letting it overflow the panel. */
+  #dashboard[data-view="home"] .chat-input-area{
+    grid-template-columns:minmax(0,1fr) auto auto !important;
+    min-width:0;
+  }
+  #dashboard[data-view="home"] .chat-emoji-btn{
+    width:34px;
+    flex-basis:34px;
+  }
+  #dashboard[data-view="home"] #chatSend.chat-cancel-btn{
+    width:auto !important;
+    min-width:70px !important;
+    max-width:100% !important;
+    padding:0 12px !important;
+    box-sizing:border-box !important;
+    white-space:nowrap !important;
+  }
+
+  @media (max-width:700px){
+    #dashboard[data-view="home"] .col-chat.chat-host-expanded{
+      top:8px !important;
+      right:8px !important;
+      bottom:8px !important;
+      left:8px !important;
+    }
+  }
+
+  .chat-backdrop.visible{ z-index:1000; }
+  @media (max-width:700px){
+    .chat-panel.expanded{
+      top:8px !important;
+      right:8px !important;
+      bottom:8px !important;
+      left:8px !important;
+    }
+    .chat-panel.expanded .chat-input-area{
+      padding:10px;
+    }
+    .chat-panel.expanded .chat-input-area .btn{
+      min-width:68px;
+    }
+  }
+
+  .refresh-row{ display:flex; justify-content:flex-end; align-items:center; margin: -6px 0 16px; gap:8px; }
