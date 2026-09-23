@@ -16,7 +16,6 @@ const HOME_CHAT_HEIGHTS = [220, 320, 440, 580];
 let homeTableSizeIndex = 1;
 let homeChatSizeIndex = 1;
 let homeChatHeightIndex = 1;
-let chatSuggestionsDismissed = false;
 
 function applyHomeSizing(){
   const dashboard = $('#dashboard');
@@ -1396,7 +1395,6 @@ function renderAll(){
   renderCapital();
   renderAttackLog();
   renderNotes();
-  renderChips();
   renderHistoryView();
   renderSettings();
 }
@@ -1862,25 +1860,6 @@ function setupHomeSizeControlsVisibility(){
   applyHomeSizeControlsVisibility();
 }
 
-function applyChatSuggestionVisibility(){
-  const chips = $('#chips');
-  if(!chips) return;
-  chips.hidden = chatSuggestionsDismissed;
-}
-
-function renderChips(){
-  const suggestions = [
-    "Who has the lowest donations?",
-    "List the opponent's war lineup",
-    "Summarize our last 10 wars",
-    "Who should we consider kicking?"
-  ];
-  $('#chips').innerHTML = suggestions.map(s => `<button class="chip">${esc(s)}</button>`).join('');
-  applyChatSuggestionVisibility();
-  document.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => { $('#chatInput').value = chip.textContent; sendChat(); });
-  });
-}
 
 // --- Phase 1: lightweight relevance filtering ----------------------------
 // A cheap keyword pass so a narrow question doesn't drag in every war,
@@ -2606,10 +2585,8 @@ async function ensureConversation(firstQuestion){
 function startNewChat(){
   state.currentConversationId = null;
   chatHistory = [];
-  chatSuggestionsDismissed = false;
   setChatSaveError('');
   $('#chatMessages').innerHTML = `<div class="msg sys">New chat. Load your clan above if you haven't, then ask away.</div>`;
-  applyChatSuggestionVisibility();
   renderChatSidebarList();
 }
 
@@ -2624,11 +2601,9 @@ async function openConversation(id){
     const body = await res.json();
     const messages = body.messages || [];
     state.currentConversationId = id;
-    chatSuggestionsDismissed = messages.some(m => m.role === 'user');
     setChatSaveError('');
     chatHistory = [];
     $('#chatMessages').innerHTML = '';
-    applyChatSuggestionVisibility();
     messages.forEach(m => {
       if(m.role === 'user'){
         appendMsg('user', m.content);
@@ -2895,12 +2870,6 @@ async function sendChat(){
   chatRequestCancelled = false;
   activeChatAbortController = new AbortController();
   const requestSignal = activeChatAbortController.signal;
-
-  // Recommendations are only for an untouched/new conversation. As soon as
-  // the user sends the first real question, keep them hidden for this chat.
-  // Starting a new chat or opening an empty saved chat resets this state.
-  chatSuggestionsDismissed = true;
-  applyChatSuggestionVisibility();
 
   setChatBusy(true);
   appendMsg('user', question);
