@@ -2734,7 +2734,10 @@ function renderChatSidebarList(){
 }
 
 function closeChatSidebar(){
-  $('#chatSidebar').classList.remove('open');
+  const sidebar = $('#chatSidebar');
+  if(!sidebar) return;
+  sidebar.classList.remove('open');
+  sidebar.style.marginLeft = '-250px';
   $('#historyBtn').classList.remove('on');
   $('#historyBtn').textContent = '☰ History';
   $('#historyBtn').title = 'Show chat history';
