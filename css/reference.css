@@ -1,0 +1,879 @@
+  /* Desktop sidebar — mirrors the supplied Clan War Room reference. */
+  .nav-backdrop{ display:none !important; }
+  .nav-sidebar{
+    grid-column:1;
+    grid-row:1 / -1;
+    position:relative;
+    inset:auto;
+    width:268px;
+    height:100vh;
+    transform:none !important;
+    margin:0;
+    border-right:1px solid var(--panel-border);
+    background:var(--bg-raised);
+    display:flex;
+    flex-direction:column;
+    z-index:50;
+  }
+  .nav-sidebar-head{
+    min-height:64px;
+    padding:18px 16px 14px;
+    border-bottom:0;
+  }
+  .nav-sidebar-head .brand-mini{
+    color:var(--text);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .nav-sidebar-head .brand-mini::before{
+    content:'CW';
+    display:inline-grid;
+    place-items:center;
+    width:28px;
+    height:28px;
+    margin-right:10px;
+    border-radius:8px;
+    background:var(--gold);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    vertical-align:middle;
+  }
+  .nav-sidebar-head #closeNavBtn{ display:none; }
+  .nav-list{
+    padding:8px 12px;
+    gap:2px;
+    overflow-y:auto;
+  }
+  .nav-item{
+    min-height:36px;
+    padding:8px 12px;
+    border-radius:10px;
+    gap:10px;
+    color:var(--text-dim);
+    font-size:13.5px;
+    font-weight:450;
+    transition:background .15s,color .15s;
+  }
+  .nav-item:hover,
+  .nav-item.nav-active{
+    background:var(--bg);
+    color:var(--text);
+  }
+  .nav-item .nav-icon{
+    width:17px;
+    font-size:16px;
+    opacity:.7;
+  }
+  .nav-divider{ margin:8px 6px; background:var(--panel-border); }
+  .nav-item.nav-notes{ color:var(--text-dim); }
+  .nav-item.nav-notes:hover{ background:var(--bg); color:var(--text); }
+
+  /* Main header */
+  .topbar{
+    grid-column:2;
+    grid-row:1;
+    min-height:64px;
+    margin:0;
+    padding:14px 24px;
+    border-bottom:0;
+    display:flex;
+    justify-content:flex-end;
+    background:var(--bg);
+  }
+  .topbar .brand,
+  .topbar .tagline{ display:none; }
+  .hamburger-btn{ display:none; }
+  .theme-toggle{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:6px 12px;
+    border:1px solid var(--panel-border);
+    border-radius:9px;
+    background:var(--panel);
+    color:var(--text-dim);
+    font-size:12.5px;
+    cursor:pointer;
+  }
+  .theme-toggle:hover{ border-color:var(--gold-dim); color:var(--text); }
+
+  /* Connection card */
+  .setup{
+    grid-column:2;
+    grid-row:2;
+    margin:0 28px 8px;
+    padding:12px 16px;
+    border:1px solid var(--panel-border);
+    border-radius:12px;
+    background:var(--panel);
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
+  }
+  .setup.is-collapsed{ padding:10px 16px; }
+  .setup h2{ font-family:inherit; font-size:14px; }
+  .setup p.hint{ font-size:12px; }
+
+  /* Dashboard becomes the single scrollable workspace. */
+  #dashboard{
+    grid-column:2;
+    grid-row:3;
+    min-width:0;
+    width:100%;
+    height:auto;
+    min-height:0;
+    overflow-y:auto;
+    padding:0 28px 44px;
+  }
+  .refresh-row{
+    position:sticky;
+    top:0;
+    z-index:15;
+    margin:0 -28px 14px;
+    padding:8px 28px;
+    background:color-mix(in srgb,var(--bg) 94%,transparent);
+    backdrop-filter:blur(8px);
+  }
+  .split-area{
+    display:block;
+    position:relative;
+    width:100%;
+    min-height:0;
+  }
+  .split-resizer{ display:none !important; }
+  .col-main{
+    width:100%;
+    min-width:0;
+    overflow:visible;
+    padding:0;
+  }
+
+  /* Home headline from the supplied redesign. */
+  .home-hero-copy{
+    width:100%;
+    max-width:960px;
+    margin:26px auto 24px;
+    text-align:center;
+  }
+  .home-hero-copy h1{
+    margin:0;
+    font-size:28px;
+    line-height:1.15;
+    font-weight:600;
+    letter-spacing:-.03em;
+    color:var(--text);
+  }
+  .home-hero-copy p{
+    margin:10px 0 0;
+    color:var(--text-faint);
+    font-size:14px;
+  }
+
+  /* Clan strip */
+  /* Reserve enough flow space for the absolutely positioned Home AI panel.
+     This tracks the selected AI height so the Members panel can never slide
+     underneath the chat when the user resizes it. */
+  #secHome{ scroll-margin-top:12px; padding-bottom:calc(var(--home-chat-height) + 54px); }
+  .clan-hero{
+    max-width:960px;
+    margin:0 auto;
+    padding:16px 26px;
+    min-height:78px;
+    border:1px solid var(--panel-border);
+    border-radius:16px;
+    background:var(--panel);
+    box-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.03);
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .clan-hero img{
+    width:42px;
+    height:42px;
+    border-radius:11px;
+    flex-shrink:0;
+  }
+  .clan-hero .name{
+    font-family:inherit;
+    font-size:16px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .clan-hero .tag{
+    display:block;
+    margin:2px 0 0;
+    color:var(--text-faint);
+    font-size:12px;
+  }
+  .clan-hero .desc{ display:none; }
+  .stat-strip{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:28px;
+  }
+  .stat{ text-align:left; }
+  .stat .v{
+    font-family:inherit;
+    font-size:17px;
+    font-weight:600;
+    color:var(--gold);
+  }
+  .stat .l{
+    font-size:11px;
+    color:var(--text-faint);
+    letter-spacing:.03em;
+  }
+  .stat-strip .stat:first-child{ display:none; }
+
+  /* Home composer: reuse the existing real AI chat controls. */
+  .col-chat{
+    position:absolute;
+    top:112px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(820px,calc(100% - 40px));
+    height:auto;
+    min-width:0;
+    padding:0;
+    display:block;
+    z-index:8;
+  }
+  .chat-panel{
+    width:100%;
+    min-height:132px;
+    height:auto;
+    border:1px solid var(--panel-border);
+    border-radius:20px;
+    background:var(--panel);
+    box-shadow:0 2px 8px rgba(0,0,0,.04);
+    overflow:hidden;
+  }
+  .chat-sidebar{ display:none; }
+  .chat-head{
+    padding:9px 12px 0;
+    border-bottom:0;
+  }
+  .chat-head-row{ align-items:center; }
+  .chat-head-row > div:first-child{ display:none; }
+  .chat-head-btns{
+    width:100%;
+    justify-content:space-between;
+  }
+  .ai-provider-select{
+    background:var(--bg);
+    border:1px solid transparent;
+    border-radius:8px;
+    color:var(--text-dim);
+    padding:5px 26px 5px 9px;
+  }
+  .btn-expand{
+    width:28px;
+    height:28px;
+    border:0;
+    color:var(--text-faint);
+  }
+  .btn-expand:hover{ background:var(--bg); }
+  .chat-head-btns .btn-expand{ border:0; }
+  /* Home chat is a real working composer, not just a visual placeholder.
+     Keep the message area visible so answers render here without needing
+     Expand or the dedicated AI Chat view. */
+  #dashboard[data-view="home"] .chat-messages{
+    display:flex;
+    flex:1 1 auto;
+    min-height:0;
+    overflow-y:auto;
+    padding:8px 14px;
+  }
+  #dashboard[data-view="home"] .msg{
+    max-width:92%;
+  }
+  .limit-toast{ display:none; }
+  .chat-input-area{
+    border-top:0;
+    padding:2px 14px 10px;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 38px;
+    gap:8px;
+    align-items:end;
+  }
+  .chat-input-area textarea{
+    height:42px;
+    min-height:42px;
+    border:0;
+    outline:0;
+    background:transparent;
+    padding:7px 0 5px;
+    font-size:15px;
+    line-height:1.45;
+  }
+  .chat-input-area textarea::placeholder{ color:var(--text-faint); }
+  .chat-emoji-btn{
+    width:34px;
+    height:34px;
+    flex:0 0 34px;
+    align-self:end;
+    border:1px solid var(--panel-border);
+    border-radius:50%;
+    background:var(--bg);
+    color:var(--text-dim);
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    font-size:18px;
+    line-height:1;
+    transition:transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .chat-emoji-btn:hover,
+  .chat-emoji-btn.active{
+    border-color:var(--gold-dim);
+    background:rgba(201,162,39,.10);
+    color:var(--gold);
+    transform:translateY(-1px);
+  }
+  .chat-input-area{ position:relative; }
+  .chat-emoji-picker{
+    position:absolute;
+    right:56px;
+    bottom:52px;
+    z-index:80;
+    width:226px;
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:4px;
+    padding:8px;
+    border:1px solid var(--panel-border);
+    border-radius:12px;
+    background:var(--bg-raised);
+    box-shadow:0 14px 35px rgba(0,0,0,.24);
+  }
+  .chat-emoji-picker[hidden]{ display:none !important; }
+  .chat-emoji-picker button{
+    width:30px;
+    height:30px;
+    padding:0;
+    border:0;
+    border-radius:7px;
+    background:transparent;
+    color:var(--text);
+    cursor:pointer;
+    font-size:17px;
+  }
+  .chat-emoji-picker button:hover{
+    background:rgba(201,162,39,.12);
+    transform:scale(1.08);
+  }
+  .chat-input-hint{
+    font-size:10px;
+    color:var(--text-faint);
+    white-space:nowrap;
+    align-self:center;
+    margin-left:2px;
+  }
+  #chatSend{
+    width:34px;
+    height:34px;
+    padding:0;
+    border-radius:50%;
+    background:var(--gold);
+    color:#fff;
+    font-size:0;
+    display:grid;
+    place-items:center;
+  }
+  #chatSend::after{
+    content:'→';
+    font-size:18px;
+    line-height:1;
+  }
+  #chatSend:hover{ background:var(--gold-dim); }
+  #chatSend.chat-cancel-btn{ background:var(--red); color:#fff; font-size:12px; width:auto; min-width:70px; border-radius:8px; }
+  #chatSend.chat-cancel-btn::after{ content:none; }
+  .chat-cancel-btn:hover{ background:var(--red) !important; }
+  /* Home recommendations stay directly above the keyboard/input bar.
+     The input is the final row of the composer; only the suggestions get
+     the flexible top space. This keeps them in the same visual position
+     even when the Home AI panel height changes. */
+  #dashboard[data-view="home"] .suggestion-chips{
+    display:flex;
+    flex:0 0 auto;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-content:flex-end;
+    align-items:flex-end;
+    gap:8px;
+    padding:8px 14px 10px;
+    margin-top:auto;
+    margin-bottom:0;
+    max-width:none;
+    width:100%;
+    box-sizing:border-box;
+  }
+  #dashboard[data-view="home"] .suggestion-chips[hidden]{
+    display:none !important;
+  }
+  #homeSizeControls[hidden]{
+    display:none !important;
+  }
+  #dashboard[data-view="home"] .suggestion-chips:not([hidden]) + .chat-input-area{
+    margin-top:0;
+  }
+  #dashboard[data-view="home"] .suggestion-chips[hidden] + .chat-input-area{
+    margin-top:auto;
+  }
+  .chip{
+    padding:8px 14px;
+    border:1px solid var(--panel-border);
+    border-radius:20px;
+    background:var(--panel);
+    color:var(--text-dim);
+    font-size:13px;
+  }
+  .chip:hover{
+    border-color:var(--gold);
+    background:rgba(201,162,39,.08);
+    color:var(--text);
+  }
+
+  /* Data sections remain functional, but inherit the cleaner reference-card language. */
+  #secSummary,#secWar,#secInfo,#secCapital,#secAttackLog,#secHistory,#secNotes,#secSettings{
+    max-width:960px;
+    margin:0 auto 16px;
+    scroll-margin-top:58px;
+  }
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:16px;
+    box-shadow:0 1px 2px rgba(0,0,0,.03),0 4px 12px rgba(0,0,0,.02);
+  }
+  .panel h3{ font-family:inherit; }
+  .panel-header-row{ padding-bottom:2px; }
+  .btn,.btn-ghost{
+    border-radius:8px;
+    font-family:inherit;
+  }
+  table{ font-size:13px; }
+  th{ background:var(--bg); }
+  td{ border-bottom-color:var(--panel-border); }
+
+  /* Expanded AI chat keeps the existing full chat behavior. */
+  .chat-panel.expanded{
+    position:fixed;
+    inset:20px;
+    z-index:1000;
+    display:flex;
+    flex-direction:row;
+    min-height:0;
+    min-width:0;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+  }
+  /* Expanded mode is a two-pane chat: history on the left, conversation on
+     the right. The Home composer is portaled to <body> while expanded, so
+     these dimensions are viewport-based and do not inherit Home layout. */
+  .chat-panel.expanded .chat-main{
+    flex:1 1 auto;
+    width:auto;
+    min-width:0;
+    min-height:0;
+    height:100%;
+  }
+  .chat-panel.expanded .chat-sidebar{
+    width:250px;
+    height:100%;
+    flex:0 0 250px;
+    min-height:0;
+    margin-left:0;
+  }
+  .chat-panel.expanded .chat-sidebar{ display:flex; }
+  .chat-panel.expanded .chat-head{ padding:16px 18px; border-bottom:1px solid var(--panel-border); }
+  .chat-panel.expanded .chat-head-row > div:first-child{ display:block; }
+  .chat-panel.expanded .chat-head-btns{ width:auto; }
+  .chat-panel.expanded .chat-messages{ display:flex; }
+  .chat-panel.expanded .limit-toast{ display:flex; }
+  .chat-panel.expanded .suggestion-chips{ display:flex; padding:0 14px 10px; margin:0; max-width:none; justify-content:flex-start; }
+  .chat-panel.expanded .chat-input-area{ border-top:1px solid var(--panel-border); padding:12px 14px; display:flex; align-items:flex-end; }
+  .chat-panel.expanded .chat-emoji-btn{ margin-bottom:0; }
+  .chat-panel.expanded .chat-emoji-picker{ right:62px; bottom:58px; }
+  .chat-panel.expanded .chat-input-area textarea{ height:42px; border:1px solid var(--panel-border); border-radius:8px; padding:10px 12px; }
+  .chat-panel.expanded #chatSend{ width:auto; height:auto; border-radius:8px; padding:11px 20px; font-size:13.5px; display:block; }
+  .chat-panel.expanded #chatSend::after{ content:none; }
+
+  @media (max-width:900px){
+    .app{
+      display:block;
+      height:auto;
+      min-height:100vh;
+      overflow:visible;
+    }
+    .nav-sidebar{
+      position:fixed;
+      top:0;
+      left:0;
+      bottom:0;
+      transform:translateX(-100%) !important;
+      width:268px;
+    }
+    .nav-sidebar.open{ transform:translateX(0) !important; }
+    .nav-sidebar-head #closeNavBtn{ display:block; }
+    .hamburger-btn{ display:block; }
+    .topbar{
+      min-height:58px;
+      padding:10px 14px;
+      justify-content:flex-start;
+    }
+    .topbar .brand{ display:block; font-size:16px; color:var(--text); }
+    .topbar .tagline{ display:none; }
+    .setup{ margin:0 14px 8px; }
+    #dashboard{ padding:0 14px 36px; overflow:visible; }
+    .refresh-row{ margin:0 -14px 12px; padding:8px 14px; }
+    .clan-hero{ padding:14px 16px; flex-wrap:wrap; }
+    .stat-strip{ width:100%; margin-left:56px; gap:18px; overflow-x:auto; }
+    .col-chat{ width:calc(100% - 28px); top:116px; }
+    #secHome{ padding-bottom:180px; }
+    .home-hero-copy{ margin-top:18px; }
+    .home-hero-copy h1{ font-size:23px; }
+  }
+
+
+  /* ============================================================
+     Dedicated dashboard views
+     Navigation changes visibility/layout only. Existing render,
+     API, polling, chat, and panel logic stay untouched.
+     ============================================================ */
+  #dashboard[data-view] .home-hero-copy{ display:none; }
+  #dashboard[data-view="home"] .home-hero-copy{ display:block; }
+
+  #dashboard[data-view="home"] .split-area{
+    display:grid;
+    grid-template-columns:minmax(0,960px);
+    justify-content:center;
+    align-items:start;
+    width:100%;
+    min-height:0;
+  }
+  #dashboard[data-view="home"] .col-main{ display:contents; }
+  #dashboard[data-view="home"] #secHome{
+    grid-column:1; grid-row:1; width:100%; max-width:960px;
+    margin:0 auto 16px; padding-bottom:0;
+  }
+  #dashboard[data-view="home"] .col-chat{
+    grid-column:1; grid-row:2;
+    position:static; top:auto; left:auto; transform:none;
+    width:min(680px,100%); max-width:820px; min-width:0;
+    height:auto; margin:0 auto 24px; padding:0; display:block; z-index:auto;
+  }
+  #dashboard[data-view="home"] #secSummary{
+    grid-column:1; grid-row:3; width:100%; max-width:960px; margin:0 auto 16px;
+  }
+  #dashboard[data-view="home"] #secWar{
+    grid-column:1; grid-row:4; width:100%; max-width:960px; margin:0 auto 16px;
+  }
+  #dashboard[data-view="home"] #secCapital{
+    grid-column:1; grid-row:5; width:100%; max-width:960px; margin:0 auto 16px;
+  }
+  #dashboard[data-view="home"] #secInfo,
+  #dashboard[data-view="home"] #secAttackLog,
+  #dashboard[data-view="home"] #secHistory,
+  #dashboard[data-view="home"] #secNotes,
+  #dashboard[data-view="home"] #secSettings{ display:none !important; }
+
+  #dashboard[data-view="members"] #colMain > section:not(#secSummary),
+  #dashboard[data-view="war"] #colMain > section:not(#secWar),
+  #dashboard[data-view="info"] #colMain > section:not(#secInfo),
+  #dashboard[data-view="capital"] #colMain > section:not(#secCapital),
+  #dashboard[data-view="attack-log"] #colMain > section:not(#secAttackLog),
+  #dashboard[data-view="history"] #colMain > section:not(#secHistory),
+  #dashboard[data-view="notes"] #colMain > section:not(#secNotes),
+  #dashboard[data-view="settings"] #colMain > section:not(#secSettings){ display:none !important; }
+
+  #dashboard[data-view="members"] #secSummary,
+  #dashboard[data-view="war"] #secWar,
+  #dashboard[data-view="info"] #secInfo,
+  #dashboard[data-view="capital"] #secCapital,
+  #dashboard[data-view="attack-log"] #secAttackLog,
+  #dashboard[data-view="history"] #secHistory,
+  #dashboard[data-view="notes"] #secNotes,
+  #dashboard[data-view="settings"] #secSettings{
+    width:100%; max-width:960px; margin:0 auto;
+  }
+
+  #dashboard[data-view="chat"] .home-hero-copy{ display:none; }
+  #dashboard[data-view="chat"] .split-area{ display:block; width:100%; }
+  #dashboard[data-view="chat"] #colMain{ display:none; }
+  #dashboard[data-view="chat"] .col-chat{
+    position:static; top:auto; left:auto; transform:none;
+    width:min(960px,100%); max-width:960px; min-width:0;
+    height:auto; min-height:calc(100vh - 190px); margin:0 auto; padding:0; display:block;
+  }
+  #dashboard[data-view="chat"] .chat-panel{
+    width:100%; height:calc(100vh - 190px); min-height:560px;
+    display:flex; flex-direction:row; position:relative; overflow:hidden;
+  }
+  #dashboard[data-view="chat"] .chat-sidebar{ display:flex; }
+  #dashboard[data-view="chat"] .chat-head{ padding:16px 18px; border-bottom:1px solid var(--panel-border); }
+  #dashboard[data-view="chat"] .chat-head-row > div:first-child{ display:block; }
+  #dashboard[data-view="chat"] .chat-head-btns{ width:auto; }
+  #dashboard[data-view="chat"] .chat-messages{ display:flex; }
+  #dashboard[data-view="chat"] .limit-toast{ display:flex; }
+  #dashboard[data-view="chat"] .suggestion-chips{
+    display:flex; padding:0 14px 10px; margin:0; max-width:none; justify-content:flex-start;
+  }
+  #dashboard[data-view="chat"] .chat-input-area{
+    border-top:1px solid var(--panel-border); padding:12px 14px; display:flex;
+  }
+  #dashboard[data-view="chat"] .chat-input-area textarea{
+    height:42px; border:1px solid var(--panel-border); border-radius:8px; padding:10px 12px;
+  }
+  #dashboard[data-view="chat"] #chatSend{
+    width:auto; height:auto; border-radius:8px; padding:11px 20px;
+    font-size:13.5px; display:block;
+  }
+  #dashboard[data-view="chat"] #chatSend::after{ content:none; }
+
+  #dashboard[data-view="members"] .col-chat,
+  #dashboard[data-view="war"] .col-chat,
+  #dashboard[data-view="info"] .col-chat,
+  #dashboard[data-view="capital"] .col-chat,
+  #dashboard[data-view="attack-log"] .col-chat,
+  #dashboard[data-view="history"] .col-chat,
+  #dashboard[data-view="notes"] .col-chat,
+  #dashboard[data-view="settings"] .col-chat{ display:none; }
+
+  @media (max-width:900px){
+    #dashboard[data-view="home"] .split-area{
+      display:grid; grid-template-columns:minmax(0,1fr); width:100%;
+    }
+    #dashboard[data-view="home"] .col-chat{ width:min(680px,100%); margin:0 auto 22px; }
+    #dashboard[data-view="chat"] .col-chat{ width:100%; min-height:0; margin:0; }
+    #dashboard[data-view="chat"] .chat-panel{
+      height:calc(100vh - 150px); min-height:520px; border-radius:16px;
+    }
+  }
+
+
+  /* Restore the original Home composition: centered hero + clan card + floating
+     composer, with reserved space so the composer never overlaps the first table.
+     The feature dashboards keep using the existing dedicated-view system. */
+  #dashboard[data-view="home"] .split-area{
+    display:block;
+    position:relative;
+    width:100%;
+    min-height:0;
+  }
+  #dashboard[data-view="home"] .col-main{
+    display:block;
+    width:100%;
+    min-width:0;
+    overflow:visible;
+    padding:0;
+  }
+  #dashboard[data-view="home"] #secHome{
+    display:block;
+    width:100%;
+    max-width:960px;
+    margin:0 auto;
+    /* Reserve exactly the space used by the absolute Home AI panel.
+       Increasing AI height therefore pushes the tables down instead of
+       letting the chat overlap them. */
+    padding-bottom:calc(var(--home-chat-height) + 54px);
+  }
+  #dashboard[data-view="home"] .col-chat{
+    position:absolute;
+    top:112px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(var(--home-chat-width),calc(100% - 40px));
+    max-width:var(--home-chat-width);
+    min-width:0;
+    height:auto;
+    margin:0;
+    padding:0;
+    display:block;
+    z-index:8;
+  }
+  #dashboard[data-view="home"] #secSummary,
+  #dashboard[data-view="home"] #secWar,
+  #dashboard[data-view="home"] #secCapital{
+    width:100%;
+    max-width:960px;
+    margin:0 auto 16px;
+  }
+
+  /* Never let a hidden chat warning reserve or block clicks. The warning is
+     controlled by JS, and the hidden attribute must always win over view CSS. */
+  #limitToast[hidden],
+  #chatSaveError[hidden]{ display:none !important; }
+
+  /* Home sizing controls. */
+  :root{
+    --home-table-scale:1;
+    --home-chat-width:680px;
+    --home-chat-height:320px;
+  }
+  .home-size-controls{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-right:auto;
+    flex-wrap:wrap;
+  }
+  .home-size-label{
+    color:var(--text-dim);
+    font-size:11.5px;
+    font-weight:600;
+    margin-right:2px;
+  }
+  .home-size-group{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    border:1px solid var(--panel-border);
+    border-radius:8px;
+    background:var(--panel);
+    padding:3px 5px;
+  }
+  .home-size-sub{
+    color:var(--text-faint);
+    font-size:10.5px;
+    margin:0 2px 0 3px;
+  }
+  .home-size-value{
+    min-width:38px;
+    text-align:center;
+    color:var(--text);
+    font-size:10.5px;
+    font-weight:600;
+  }
+  .home-size-group .btn-small{
+    min-width:24px;
+    width:24px;
+    height:24px;
+    padding:0;
+    line-height:1;
+  }
+
+  /* Home table sizing: controls change both readable type and row height. */
+  #dashboard[data-view="home"][data-home-table-size] table{
+    font-size:calc(13px * var(--home-table-scale));
+  }
+  #dashboard[data-view="home"][data-home-table-size] th{
+    font-size:calc(10.5px * var(--home-table-scale));
+    padding-top:calc(8px * var(--home-table-scale));
+    padding-bottom:calc(8px * var(--home-table-scale));
+  }
+  #dashboard[data-view="home"][data-home-table-size] td{
+    font-size:calc(13px * var(--home-table-scale));
+    padding-top:calc(8px * var(--home-table-scale));
+    padding-bottom:calc(8px * var(--home-table-scale));
+  }
+  #dashboard[data-view="home"] .col-chat{
+    width:min(var(--home-chat-width),calc(100% - 40px));
+  }
+  #dashboard[data-view="home"] .chat-panel{
+    height:var(--home-chat-height);
+    min-height:220px;
+  }
+  /* Keep the Home composer controls anchored to the bottom of the resized
+     AI panel. The panel can grow without leaving the input stranded at top. */
+  #dashboard[data-view="home"] .chat-main{
+    height:100%;
+    min-height:0;
+  }
+  /* When suggestions are visible they sit immediately above the
+     input bar. If they are hidden, the input bar returns to the bottom. */
+  #dashboard[data-view="home"] .chat-input-area{
+    margin-top:auto;
+  }
+  #dashboard[data-view="home"] .suggestion-chips:not([hidden]) + .chat-input-area{
+    margin-top:0;
+  }
+
+  /* Light mode: replace dark-only message/status surfaces so text stays readable. */
+  html[data-theme="light"] .msg.user{
+    background:#eee7d7;
+    color:#24232a;
+  }
+  html[data-theme="light"] .msg.ai{
+    background:#f1f3f5;
+    border-color:#d6dbe2;
+    color:#24232a;
+  }
+  html[data-theme="light"] .ai-thinking{
+    background:#f5f6f8;
+    border-color:#d6dbe2;
+  }
+  html[data-theme="light"] .ai-thinking summary,
+  html[data-theme="light"] .ai-thinking-body{
+    color:#59616d;
+  }
+  html[data-theme="light"] .limit-toast{
+    background:#fff7df;
+    border-color:#d8b45b;
+    color:#75570b;
+    box-shadow:0 10px 30px rgba(20,20,20,.12);
+  }
+  html[data-theme="light"] .limit-toast .close{ color:#75570b; }
+  html[data-theme="light"] .chat-history-item:hover{ background:#f1f3f5; }
+  html[data-theme="light"] .chat-history-item.active{ background:#eee7d7; }
+  html[data-theme="light"] .nav-item:hover{ background:#f0f1f3; }
+  html[data-theme="light"] .nav-item.nav-notes:hover{ background:#f5eedc; }
+  html[data-theme="light"] .role-badge{ background:#edf0f3; color:#59616d; }
+  html[data-theme="light"] .role-leader{ background:#fff0c7; color:#8a6410; }
+  html[data-theme="light"] .role-coLeader{ background:#e7f2e7; color:#397044; }
+  html[data-theme="light"] .ws-inWar{ background:#fff0d2; color:#8a6410; }
+  html[data-theme="light"] .ws-warEnded,
+  html[data-theme="light"] .ws-none{ background:#edf0f3; color:#59616d; }
+  html[data-theme="light"] .ws-preparation{ background:#e8f3f7; color:#3c7286; }
+
+  /* User-controlled typography. */
+  :root{
+    --warroom-font-scale:1;
+    --warroom-font-family:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  body,
+  button,
+  input,
+  textarea,
+  select{
+    font-family:var(--warroom-font-family) !important;
+  }
+  h1,h2,h3,.brand{
+    font-family:var(--warroom-font-family) !important;
+  }
+  body[data-font-size="small"]{ --warroom-font-scale:.90; }
+  body[data-font-size="normal"]{ --warroom-font-scale:1; }
+  body[data-font-size="large"]{ --warroom-font-scale:1.12; }
+  body[data-font-size="xlarge"]{ --warroom-font-scale:1.24; }
+  body[data-font-size] .panel h3{ font-size:calc(14.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .panel .empty{ font-size:calc(13px * var(--warroom-font-scale)); }
+  body[data-font-size] table{ font-size:calc(12.8px * var(--warroom-font-scale)); }
+  body[data-font-size] th{ font-size:calc(10.5px * var(--warroom-font-scale)); }
+  body[data-font-size] td{ font-size:calc(12.8px * var(--warroom-font-scale)); }
+  body[data-font-size] .btn{ font-size:calc(13.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .btn-small{ font-size:calc(11.5px * var(--warroom-font-scale)); }
+  body[data-font-size] label{ font-size:calc(12px * var(--warroom-font-scale)); }
+  body[data-font-size] .settings-label{ font-size:calc(12.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .settings-order-row{ font-size:calc(12.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .note-text{ font-size:calc(13px * var(--warroom-font-scale)); }
+  body[data-font-size] .note-meta{ font-size:calc(10.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .chat-input-area textarea{ font-size:calc(15px * var(--warroom-font-scale)); }
+  body[data-font-size] .chip{ font-size:calc(13px * var(--warroom-font-scale)); }
+  body[data-font-size] .topbar .tagline{ font-size:calc(13px * var(--warroom-font-scale)); }
+
+  @media (max-width:900px){
+    #dashboard[data-view="home"] .split-area{ display:block; position:relative; }
+    #dashboard[data-view="home"] .col-main{ display:block; width:100%; }
+    #dashboard[data-view="home"] #secHome{ padding-bottom:calc(var(--home-chat-height) + 54px); }
+    #dashboard[data-view="home"] .col-chat{
+      position:absolute;
+      top:116px;
+      left:50%;
+      transform:translateX(-50%);
+      width:calc(100% - 28px);
+      max-width:680px;
+      margin:0;
+    }
+  }
+
