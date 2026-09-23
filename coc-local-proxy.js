@@ -92,7 +92,7 @@ const server = http.createServer(async (req, res) => {
   // Keep this scoped to /css and /js so API routes remain untouched.
   if (req.method === "GET" && (req.url.startsWith("/css/") || req.url.startsWith("/js/"))) {
     const pathname = new URL(req.url, "http://localhost").pathname;
-    const relativePath = pathname.replace(/^\/(?:css|js)\//, (m) => m.slice(1));
+    const relativePath = pathname.replace(/^\//, "");
     const assetPath = path.resolve(__dirname, relativePath);
     const rootPath = path.resolve(__dirname);
     if (!assetPath.startsWith(rootPath + path.sep)) {
