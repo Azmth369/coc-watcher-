@@ -2819,7 +2819,13 @@ $('#closeSidebarBtn').addEventListener('click', (e) => {
 });
 
 const chatPanelEl = document.querySelector('.chat-panel');
-$('#expandChat').addEventListener('click', () => setChatExpanded(!chatPanelEl.classList.contains('expanded')));
+document.addEventListener('click', (e) => {
+  const expandBtn = e.target.closest('#expandChat');
+  if(!expandBtn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  setChatExpanded(!chatPanelEl.classList.contains('expanded'));
+});
 $('#chatBackdrop').addEventListener('click', () => setChatExpanded(false));
 
 function setChatExpanded(on){
