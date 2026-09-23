@@ -370,6 +370,62 @@
     min-height:0;
     overflow-y:auto;
   }
+  /* Home uses an absolute/translated chat host. In expanded mode the host
+     itself must leave that layout context, otherwise the fixed chat can still
+     inherit the Home containing block and its normal 320px height. */
+  #dashboard[data-view="home"] .col-chat.chat-host-expanded{
+    position:fixed !important;
+    top:20px !important;
+    right:20px !important;
+    bottom:20px !important;
+    left:20px !important;
+    width:auto !important;
+    height:auto !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    transform:none !important;
+    z-index:1001 !important;
+  }
+  #dashboard[data-view="home"] .col-chat.chat-host-expanded .chat-panel.expanded{
+    position:absolute !important;
+    inset:0 !important;
+    width:auto !important;
+    height:auto !important;
+    max-width:none !important;
+    max-height:none !important;
+    min-width:0 !important;
+    min-height:0 !important;
+    margin:0 !important;
+    transform:none !important;
+  }
+
+  /* The Home composer normally reserves a narrow 38px grid column for the
+     round Ask button. Cancel is wider, so give the button its own auto-sized
+     column instead of letting it overflow the panel. */
+  #dashboard[data-view="home"] .chat-input-area{
+    grid-template-columns:minmax(0,1fr) auto !important;
+    min-width:0;
+  }
+  #dashboard[data-view="home"] #chatSend.chat-cancel-btn{
+    width:auto !important;
+    min-width:70px !important;
+    max-width:100% !important;
+    padding:0 12px !important;
+    box-sizing:border-box !important;
+    white-space:nowrap !important;
+  }
+
+  @media (max-width:700px){
+    #dashboard[data-view="home"] .col-chat.chat-host-expanded{
+      top:8px !important;
+      right:8px !important;
+      bottom:8px !important;
+      left:8px !important;
+    }
+  }
+
   .chat-backdrop.visible{ z-index:1000; }
   @media (max-width:700px){
     .chat-panel.expanded{
