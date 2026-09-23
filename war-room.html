@@ -1078,6 +1078,15 @@
     height:var(--home-chat-height);
     min-height:220px;
   }
+  /* Keep the Home composer controls anchored to the bottom of the resized
+     AI panel. The panel can grow without leaving the input stranded at top. */
+  #dashboard[data-view="home"] .chat-main{
+    height:100%;
+    min-height:0;
+  }
+  #dashboard[data-view="home"] .chat-input-area{
+    margin-top:auto;
+  }
 
   /* Light mode: replace dark-only message/status surfaces so text stays readable. */
   html[data-theme="light"] .msg.user{
