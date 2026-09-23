@@ -326,7 +326,6 @@
   .limit-toast .close:hover{ opacity:1; }
   .chat-input-area{ border-top: 1px solid var(--panel-border); padding: 12px 14px; display:flex; gap: 8px; }
   .chat-input-area textarea{ resize:none; height: 42px; padding-top:11px; }
-  .suggestion-chips{ display:flex; flex-wrap:wrap; gap:6px; padding: 0 14px 10px; }
   .chip{ font-size: 11px; color: var(--text-dim); border: 1px solid var(--panel-border); padding: 5px 10px; border-radius: 20px; cursor:pointer; background: transparent; }
   .chip:hover{ border-color: var(--gold-dim); color: var(--text); }
 
@@ -407,10 +406,6 @@
   #dashboard[data-view="home"] .chat-input-area{
     grid-template-columns:minmax(0,1fr) auto auto !important;
     min-width:0;
-  }
-  #dashboard[data-view="home"] .chat-emoji-btn{
-    width:34px;
-    flex-basis:34px;
   }
   #dashboard[data-view="home"] #chatSend.chat-cancel-btn{
     width:auto !important;
@@ -847,61 +842,7 @@
     line-height:1.45;
   }
   .chat-input-area textarea::placeholder{ color:var(--text-faint); }
-  .chat-emoji-btn{
-    width:34px;
-    height:34px;
-    flex:0 0 34px;
-    align-self:end;
-    border:1px solid var(--panel-border);
-    border-radius:50%;
-    background:var(--bg);
-    color:var(--text-dim);
-    cursor:pointer;
-    display:grid;
-    place-items:center;
-    font-size:18px;
-    line-height:1;
-    transition:transform .12s ease, border-color .12s ease, background .12s ease;
-  }
-  .chat-emoji-btn:hover,
-  .chat-emoji-btn.active{
-    border-color:var(--gold-dim);
-    background:rgba(201,162,39,.10);
-    color:var(--gold);
-    transform:translateY(-1px);
-  }
   .chat-input-area{ position:relative; }
-  .chat-emoji-picker{
-    position:absolute;
-    right:56px;
-    bottom:52px;
-    z-index:80;
-    width:226px;
-    display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:4px;
-    padding:8px;
-    border:1px solid var(--panel-border);
-    border-radius:12px;
-    background:var(--bg-raised);
-    box-shadow:0 14px 35px rgba(0,0,0,.24);
-  }
-  .chat-emoji-picker[hidden]{ display:none !important; }
-  .chat-emoji-picker button{
-    width:30px;
-    height:30px;
-    padding:0;
-    border:0;
-    border-radius:7px;
-    background:transparent;
-    color:var(--text);
-    cursor:pointer;
-    font-size:17px;
-  }
-  .chat-emoji-picker button:hover{
-    background:rgba(201,162,39,.12);
-    transform:scale(1.08);
-  }
   .chat-input-hint{
     font-size:10px;
     color:var(--text-faint);
@@ -933,32 +874,8 @@
      The input is the final row of the composer; only the suggestions get
      the flexible top space. This keeps them in the same visual position
      even when the Home AI panel height changes. */
-  #dashboard[data-view="home"] .suggestion-chips{
-    display:flex;
-    flex:0 0 auto;
-    flex-wrap:wrap;
-    justify-content:center;
-    align-content:flex-end;
-    align-items:flex-end;
-    gap:8px;
-    padding:8px 14px 10px;
-    margin-top:auto;
-    margin-bottom:0;
-    max-width:none;
-    width:100%;
-    box-sizing:border-box;
-  }
-  #dashboard[data-view="home"] .suggestion-chips[hidden]{
-    display:none !important;
-  }
   #homeSizeControls[hidden]{
     display:none !important;
-  }
-  #dashboard[data-view="home"] .suggestion-chips:not([hidden]) + .chat-input-area{
-    margin-top:0;
-  }
-  #dashboard[data-view="home"] .suggestion-chips[hidden] + .chat-input-area{
-    margin-top:auto;
   }
   .chip{
     padding:8px 14px;
@@ -1030,10 +947,7 @@
   .chat-panel.expanded .chat-head-btns{ width:auto; }
   .chat-panel.expanded .chat-messages{ display:flex; }
   .chat-panel.expanded .limit-toast{ display:flex; }
-  .chat-panel.expanded .suggestion-chips{ display:flex; padding:0 14px 10px; margin:0; max-width:none; justify-content:flex-start; }
   .chat-panel.expanded .chat-input-area{ border-top:1px solid var(--panel-border); padding:12px 14px; display:flex; align-items:flex-end; }
-  .chat-panel.expanded .chat-emoji-btn{ margin-bottom:0; }
-  .chat-panel.expanded .chat-emoji-picker{ right:62px; bottom:58px; }
   .chat-panel.expanded .chat-input-area textarea{ height:42px; border:1px solid var(--panel-border); border-radius:8px; padding:10px 12px; }
   .chat-panel.expanded #chatSend{ width:auto; height:auto; border-radius:8px; padding:11px 20px; font-size:13.5px; display:block; }
   .chat-panel.expanded #chatSend::after{ content:none; }
@@ -1155,9 +1069,6 @@
   #dashboard[data-view="chat"] .chat-head-btns{ width:auto; }
   #dashboard[data-view="chat"] .chat-messages{ display:flex; }
   #dashboard[data-view="chat"] .limit-toast{ display:flex; }
-  #dashboard[data-view="chat"] .suggestion-chips{
-    display:flex; padding:0 14px 10px; margin:0; max-width:none; justify-content:flex-start;
-  }
   #dashboard[data-view="chat"] .chat-input-area{
     border-top:1px solid var(--panel-border); padding:12px 14px; display:flex;
   }
@@ -1323,9 +1234,6 @@
      input bar. If they are hidden, the input bar returns to the bottom. */
   #dashboard[data-view="home"] .chat-input-area{
     margin-top:auto;
-  }
-  #dashboard[data-view="home"] .suggestion-chips:not([hidden]) + .chat-input-area{
-    margin-top:0;
   }
 
   /* Light mode: replace dark-only message/status surfaces so text stays readable. */
@@ -1570,25 +1478,8 @@
               <button class="close" id="limitToastClose" title="Dismiss">×</button>
             </div>
             <div class="save-error" id="chatSaveError" hidden></div>
-            <div class="suggestion-chips" id="chips"></div>
             <div class="chat-input-area">
               <textarea id="chatInput" placeholder="Ask a question about your clan..." aria-label="Ask a question about your clan"></textarea>
-              <button class="chat-emoji-btn" id="chatEmojiBtn" type="button" title="Add emoji" aria-label="Add emoji">☺</button>
-              <button class="btn" id="chatSend">Ask</button>
-              <div class="chat-emoji-picker" id="chatEmojiPicker" hidden aria-label="Emoji picker">
-                <button type="button" data-emoji="⚔️" title="War">⚔️</button>
-                <button type="button" data-emoji="🏆" title="Trophy">🏆</button>
-                <button type="button" data-emoji="🔥" title="Fire">🔥</button>
-                <button type="button" data-emoji="💯" title="100">💯</button>
-                <button type="button" data-emoji="👀" title="Eyes">👀</button>
-                <button type="button" data-emoji="😎" title="Cool">😎</button>
-                <button type="button" data-emoji="😂" title="Laugh">😂</button>
-                <button type="button" data-emoji="❤️" title="Heart">❤️</button>
-                <button type="button" data-emoji="👍" title="Thumbs up">👍</button>
-                <button type="button" data-emoji="🎯" title="Target">🎯</button>
-                <button type="button" data-emoji="💪" title="Strong">💪</button>
-                <button type="button" data-emoji="🤔" title="Thinking">🤔</button>
-              </div>
             </div>
           </div>
         </div>
@@ -1618,8 +1509,6 @@ const HOME_CHAT_HEIGHTS = [220, 320, 440, 580];
 let homeTableSizeIndex = 1;
 let homeChatSizeIndex = 1;
 let homeChatHeightIndex = 1;
-let chatSuggestionsDismissed = false;
-
 function applyHomeSizing(){
   const dashboard = $('#dashboard');
   if(!dashboard) return;
@@ -2998,7 +2887,6 @@ function renderAll(){
   renderCapital();
   renderAttackLog();
   renderNotes();
-  renderChips();
   renderHistoryView();
   renderSettings();
 }
@@ -3464,25 +3352,7 @@ function setupHomeSizeControlsVisibility(){
   applyHomeSizeControlsVisibility();
 }
 
-function applyChatSuggestionVisibility(){
-  const chips = $('#chips');
-  if(!chips) return;
-  chips.hidden = chatSuggestionsDismissed;
-}
 
-function renderChips(){
-  const suggestions = [
-    "Who has the lowest donations?",
-    "List the opponent's war lineup",
-    "Summarize our last 10 wars",
-    "Who should we consider kicking?"
-  ];
-  $('#chips').innerHTML = suggestions.map(s => `<button class="chip">${esc(s)}</button>`).join('');
-  applyChatSuggestionVisibility();
-  document.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => { $('#chatInput').value = chip.textContent; sendChat(); });
-  });
-}
 
 // --- Phase 1: lightweight relevance filtering ----------------------------
 // A cheap keyword pass so a narrow question doesn't drag in every war,
@@ -4208,7 +4078,6 @@ async function ensureConversation(firstQuestion){
 function startNewChat(){
   state.currentConversationId = null;
   chatHistory = [];
-  chatSuggestionsDismissed = false;
   setChatSaveError('');
   $('#chatMessages').innerHTML = `<div class="msg sys">New chat. Load your clan above if you haven't, then ask away.</div>`;
   applyChatSuggestionVisibility();
@@ -4226,7 +4095,6 @@ async function openConversation(id){
     const body = await res.json();
     const messages = body.messages || [];
     state.currentConversationId = id;
-    chatSuggestionsDismissed = messages.some(m => m.role === 'user');
     setChatSaveError('');
     chatHistory = [];
     $('#chatMessages').innerHTML = '';
@@ -4382,34 +4250,6 @@ function resizeChatInput(){
 }
 $('#chatInput').addEventListener('input', resizeChatInput);
 
-const chatEmojiBtn = $('#chatEmojiBtn');
-const chatEmojiPicker = $('#chatEmojiPicker');
-function setEmojiPicker(open){
-  if(!chatEmojiPicker || !chatEmojiBtn) return;
-  chatEmojiPicker.hidden = !open;
-  chatEmojiBtn.classList.toggle('active', open);
-}
-chatEmojiBtn?.addEventListener('click', e => {
-  e.stopPropagation();
-  setEmojiPicker(chatEmojiPicker.hidden);
-});
-chatEmojiPicker?.addEventListener('click', e => {
-  const btn = e.target.closest('[data-emoji]');
-  if(!btn) return;
-  const input = $('#chatInput');
-  const emoji = btn.dataset.emoji || '';
-  const start = input.selectionStart ?? input.value.length;
-  const end = input.selectionEnd ?? input.value.length;
-  input.value = input.value.slice(0,start) + emoji + input.value.slice(end);
-  input.selectionStart = input.selectionEnd = start + emoji.length;
-  resizeChatInput();
-  input.focus();
-});
-document.addEventListener('click', e => {
-  if(chatEmojiPicker && !chatEmojiPicker.hidden && !chatEmojiPicker.contains(e.target) && e.target !== chatEmojiBtn){
-    setEmojiPicker(false);
-  }
-});
 resizeChatInput();
 
 $('#newChatBtn').addEventListener('click', startNewChat);
@@ -4479,17 +4319,9 @@ async function sendChat(){
 
   if(activeChatAbortController) return;
   hideLimitToast();
-  setEmojiPicker(false);
   chatRequestCancelled = false;
   activeChatAbortController = new AbortController();
   const requestSignal = activeChatAbortController.signal;
-
-  // Recommendations are only for an untouched/new conversation. As soon as
-  // the user sends the first real question, keep them hidden for this chat.
-  // Starting a new chat or opening an empty saved chat resets this state.
-  chatSuggestionsDismissed = true;
-  applyChatSuggestionVisibility();
-
   setChatBusy(true);
   appendMsg('user', question);
   input.value = '';
