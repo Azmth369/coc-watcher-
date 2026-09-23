@@ -49,6 +49,7 @@
     display:flex; flex-direction:column; margin-left: -250px; transition: margin-left .18s ease;
   }
   .chat-sidebar.open{ margin-left: 0; }
+  .chat-sidebar:not(.open){ margin-left: -250px !important; }
   .chat-sidebar-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding: 12px; border-bottom: 1px solid var(--panel-border); flex-shrink:0; }
   .chat-sidebar-head .btn{ flex:1; }
   .chat-sidebar-list{ flex:1; overflow-y:auto; padding: 8px; }
