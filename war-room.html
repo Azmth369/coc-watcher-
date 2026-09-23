@@ -1367,6 +1367,7 @@ let activeChatAbortController = null;
 let chatRequestCancelled = false;
 let memberSort = { key: 'rank', dir: 'asc' };
 let thLoading = false;
+let homeSuggestionsHidden = false;
 
 const $ = sel => document.querySelector(sel);
 const HOME_TABLE_SIZES = [0.85, 1, 1.15, 1.3];
@@ -3195,8 +3196,6 @@ function renderHistoryView(){
          </table>`}
   `);
 }
-
-let homeSuggestionsHidden = false;
 
 function applyHomeSuggestionsVisibility(){
   const chips = $('#chips');
