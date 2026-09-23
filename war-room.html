@@ -138,33 +138,6 @@
   .btn-small{ padding: 6px 12px; font-size: 11.5px; }
 
   .settings-row{ display:flex; align-items:center; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--panel-border); gap: 10px; }
-  .settings-appearance-editor{ margin:12px 0 18px; padding:16px; border:1px solid var(--panel-border); border-radius:12px; background:var(--bg-raised); }
-  .settings-editor-head{ margin-bottom:14px; }
-  .settings-editor-title{ font-size:14px; font-weight:700; color:var(--text); }
-  .settings-editor-help{ margin-top:4px; font-size:11px; color:var(--text-faint); }
-  .settings-control{ padding:12px 0; border-bottom:1px solid var(--panel-border); }
-  .settings-control-label{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:12.5px; color:var(--text-dim); }
-  .settings-control-label strong{ color:var(--gold); font-size:12px; }
-  .settings-control input[type="range"]{ width:100%; accent-color:var(--gold); cursor:pointer; }
-  .settings-font-select{ min-width:150px; background:var(--panel); border:1px solid var(--panel-border); color:var(--text); border-radius:8px; padding:7px 10px; font:inherit; }
-  .settings-live-preview{ margin-top:16px; padding:12px; border:1px dashed var(--panel-border); border-radius:10px; }
-  .settings-live-preview-title{ font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-faint); margin-bottom:10px; }
-  .settings-preview-chat{ border:1px solid var(--panel-border); border-radius:10px; overflow:hidden; background:var(--panel); }
-  .settings-preview-head{ padding:9px 11px; border-bottom:1px solid var(--panel-border); font-size:12px; color:var(--text); display:flex; justify-content:space-between; }
-  .settings-preview-head span{ color:var(--gold); font-size:10px; }
-  .settings-preview-body{ padding:10px; min-height:70px; }
-  .settings-preview-chip{ display:inline-block; padding:6px 9px; border:1px solid var(--panel-border); border-radius:16px; font-size:11px; color:var(--text-dim); }
-  .settings-preview-ai{ margin-top:8px; padding:9px; border-radius:8px; background:var(--bg); color:var(--text-dim); font-size:11px; line-height:1.45; }
-  .settings-preview-ai strong{ color:var(--gold); }
-  .settings-preview-table{ margin-top:10px; border:1px solid var(--panel-border); border-radius:8px; overflow:hidden; }
-  .settings-preview-row{ display:grid; grid-template-columns:36px 1fr 90px 45px 80px; gap:8px; padding:7px 9px; border-bottom:1px solid var(--panel-border); font-size:11px; color:var(--text-dim); }
-  .settings-preview-row:last-child{ border-bottom:0; }
-  .settings-preview-header{ color:var(--text-faint); font-size:9px; text-transform:uppercase; }
-  .settings-editor-actions{ display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
-  .settings-saved-card{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin:10px 0 14px; padding:11px 12px; border:1px solid var(--panel-border); border-radius:10px; background:var(--bg-raised); }
-  .settings-saved-card strong{ display:block; font-size:12px; color:var(--text); }
-  .settings-saved-card span{ display:block; margin-top:3px; font-size:10.5px; color:var(--text-faint); }
-
   .settings-row-order{ border-bottom: none; padding-bottom: 4px; }
   .settings-label{ font-size: 12.5px; color: var(--text-dim); font-weight: 600; }
   .settings-btns{ display:flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
@@ -1033,13 +1006,58 @@
   #limitToast[hidden],
   #chatSaveError[hidden]{ display:none !important; }
 
-  /* Settings-controlled Home layout variables. */
+  /* Home sizing controls. */
   :root{
     --home-table-scale:1;
     --home-chat-width:680px;
-    --home-chat-height:260px;
+    --home-chat-height:320px;
   }
-  #dashboard[data-view="home"][data-home-table-size] table{ font-size:calc(13px * var(--home-table-scale)); }
+  .home-size-controls{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-right:auto;
+    flex-wrap:wrap;
+  }
+  .home-size-label{
+    color:var(--text-dim);
+    font-size:11.5px;
+    font-weight:600;
+    margin-right:2px;
+  }
+  .home-size-group{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    border:1px solid var(--panel-border);
+    border-radius:8px;
+    background:var(--panel);
+    padding:3px 5px;
+  }
+  .home-size-sub{
+    color:var(--text-faint);
+    font-size:10.5px;
+    margin:0 2px 0 3px;
+  }
+  .home-size-value{
+    min-width:38px;
+    text-align:center;
+    color:var(--text);
+    font-size:10.5px;
+    font-weight:600;
+  }
+  .home-size-group .btn-small{
+    min-width:24px;
+    width:24px;
+    height:24px;
+    padding:0;
+    line-height:1;
+  }
+
+  /* Home table sizing: controls change both readable type and row height. */
+  #dashboard[data-view="home"][data-home-table-size] table{
+    font-size:calc(13px * var(--home-table-scale));
+  }
   #dashboard[data-view="home"][data-home-table-size] th{
     font-size:calc(10.5px * var(--home-table-scale));
     padding-top:calc(8px * var(--home-table-scale));
@@ -1052,9 +1070,11 @@
   }
   #dashboard[data-view="home"] .col-chat{
     width:min(var(--home-chat-width),calc(100% - 40px));
-    height:var(--home-chat-height);
   }
-  #dashboard[data-view="home"] .chat-panel{ height:100%; min-height:0; }
+  #dashboard[data-view="home"] .chat-panel{
+    height:var(--home-chat-height);
+    min-height:220px;
+  }
 
   /* Light mode: replace dark-only message/status surfaces so text stays readable. */
   html[data-theme="light"] .msg.user{
@@ -1196,6 +1216,27 @@
 
   <div id="dashboard" data-view="home" hidden>
     <div class="refresh-row">
+      <div class="home-size-controls" id="homeSizeControls" aria-label="Home sizing controls">
+        <span class="home-size-label">Home size</span>
+        <span class="home-size-group" title="Resize Home tables">
+          <span class="home-size-sub">Tables</span>
+          <button class="btn-ghost btn-small" id="homeTableSizeDown" title="Make Home tables smaller">−</button>
+          <span class="home-size-value" id="homeTableSizeValue">100%</span>
+          <button class="btn-ghost btn-small" id="homeTableSizeUp" title="Make Home tables larger">+</button>
+        </span>
+        <span class="home-size-group" title="Resize Home AI chat width">
+          <span class="home-size-sub">AI width</span>
+          <button class="btn-ghost btn-small" id="homeChatSizeDown" title="Make Home AI chat narrower">−</button>
+          <span class="home-size-value" id="homeChatSizeValue">100%</span>
+          <button class="btn-ghost btn-small" id="homeChatSizeUp" title="Make Home AI chat wider">+</button>
+        </span>
+        <span class="home-size-group" title="Resize Home AI chat height">
+          <span class="home-size-sub">AI height</span>
+          <button class="btn-ghost btn-small" id="homeChatHeightDown" title="Make Home AI chat shorter">−</button>
+          <span class="home-size-value" id="homeChatHeightValue">100%</span>
+          <button class="btn-ghost btn-small" id="homeChatHeightUp" title="Make Home AI chat taller">+</button>
+        </span>
+      </div>
       <button class="btn-ghost btn-small" id="collapseAllBtn">Collapse all panels</button>
       <button class="btn btn-ghost" id="refreshBtn">Refresh data</button>
     </div>
@@ -1302,73 +1343,70 @@ let thLoading = false;
 
 const $ = sel => document.querySelector(sel);
 const HOME_TABLE_SIZES = [0.85, 1, 1.15, 1.3];
-const HOME_CHAT_WIDTHS = [560, 680, 800, 920];
+const HOME_CHAT_SIZES = [560, 680, 800, 900];
 const HOME_CHAT_HEIGHTS = [220, 320, 440, 580];
-const FONT_FAMILIES = {
-  inter: "'Inter',system-ui,-apple-system,sans-serif",
-  system: "system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-  serif: "Georgia,'Times New Roman',serif",
-  mono: "'SFMono-Regular',Consolas,'Liberation Mono',monospace"
-};
-let appearanceEditorOpen = false;
-let appearanceDraft = null;
+let homeTableSizeIndex = 1;
+let homeChatSizeIndex = 1;
+let homeChatHeightIndex = 1;
 
-function getSavedAppearance(){
-  let table=1, chatWidth=1, chatHeight=1;
-  try{
-    const t=parseInt(localStorage.getItem('warroom_home_table_size'),10);
-    const w=parseInt(localStorage.getItem('warroom_home_chat_width'),10);
-    const h=parseInt(localStorage.getItem('warroom_home_chat_height'),10);
-    if(Number.isInteger(t)) table=Math.min(Math.max(t,0),HOME_TABLE_SIZES.length-1);
-    if(Number.isInteger(w)) chatWidth=Math.min(Math.max(w,0),HOME_CHAT_WIDTHS.length-1);
-    if(Number.isInteger(h)) chatHeight=Math.min(Math.max(h,0),HOME_CHAT_HEIGHTS.length-1);
-  }catch(e){}
-  return {
-    tableIndex:table,
-    chatWidthIndex:chatWidth,
-    chatHeightIndex:chatHeight,
-    fontSize:localStorage.getItem('warroom_font_size') || 'normal',
-    fontFamily:localStorage.getItem('warroom_font_family') || 'inter'
-  };
-}
-function applyAppearanceValues(values){
-  const dashboard=$('#dashboard');
+function applyHomeSizing(){
+  const dashboard = $('#dashboard');
   if(!dashboard) return;
-  dashboard.style.setProperty('--home-table-scale',String(HOME_TABLE_SIZES[values.tableIndex] ?? 1));
-  dashboard.style.setProperty('--home-chat-width',(HOME_CHAT_WIDTHS[values.chatWidthIndex] ?? 680)+'px');
-  dashboard.style.setProperty('--home-chat-height',(HOME_CHAT_HEIGHTS[values.chatHeightIndex] ?? 260)+'px');
-  dashboard.dataset.homeTableSize=String(HOME_TABLE_SIZES[values.tableIndex] ?? 1);
-  document.body.setAttribute('data-font-size',values.fontSize || 'normal');
-  document.body.style.setProperty('--warroom-font-family',FONT_FAMILIES[values.fontFamily] || FONT_FAMILIES.inter);
-}
-function saveAppearance(values){
+  const tableScale = HOME_TABLE_SIZES[homeTableSizeIndex];
+  const chatWidth = HOME_CHAT_SIZES[homeChatSizeIndex];
+  const chatHeight = HOME_CHAT_HEIGHTS[homeChatHeightIndex];
+  dashboard.style.setProperty('--home-table-scale', String(tableScale));
+  dashboard.style.setProperty('--home-chat-width', chatWidth + 'px');
+  dashboard.style.setProperty('--home-chat-height', chatHeight + 'px');
+  dashboard.dataset.homeTableSize = String(tableScale);
+  const tableValue = $('#homeTableSizeValue');
+  const chatValue = $('#homeChatSizeValue');
+  const chatHeightValue = $('#homeChatHeightValue');
+  if(tableValue) tableValue.textContent = Math.round(tableScale * 100) + '%';
+  if(chatValue) chatValue.textContent = Math.round((chatWidth / 680) * 100) + '%';
+  if(chatHeightValue) chatHeightValue.textContent = Math.round((chatHeight / 320) * 100) + '%';
   try{
-    localStorage.setItem('warroom_home_table_size',String(values.tableIndex));
-    localStorage.setItem('warroom_home_chat_width',String(values.chatWidthIndex));
-    localStorage.setItem('warroom_home_chat_height',String(values.chatHeightIndex));
-    localStorage.setItem('warroom_font_size',values.fontSize);
-    localStorage.setItem('warroom_font_family',values.fontFamily);
+    localStorage.setItem('warroom_home_table_size', String(homeTableSizeIndex));
+    localStorage.setItem('warroom_home_chat_size', String(homeChatSizeIndex));
+    localStorage.setItem('warroom_home_chat_height', String(homeChatHeightIndex));
   }catch(e){}
-  applyAppearanceValues(values);
 }
-function startAppearanceEditor(){ appearanceDraft={...getSavedAppearance()}; appearanceEditorOpen=true; renderSettings(); }
-function cancelAppearanceEditor(){ appearanceEditorOpen=false; appearanceDraft=null; applyAppearanceValues(getSavedAppearance()); renderSettings(); }
-function saveAppearanceEditor(){ if(!appearanceDraft) return; saveAppearance(appearanceDraft); appearanceEditorOpen=false; appearanceDraft=null; renderSettings(); }
-function updateAppearanceDraft(patch){
-  if(!appearanceDraft) appearanceDraft={...getSavedAppearance()};
-  appearanceDraft={...appearanceDraft,...patch};
-  applyAppearanceValues(appearanceDraft);
-  updateAppearanceEditorLabels();
+
+function setupHomeSizing(){
+  try{
+    const savedTable = parseInt(localStorage.getItem('warroom_home_table_size'),10);
+    const savedChat = parseInt(localStorage.getItem('warroom_home_chat_size'),10);
+    const savedChatHeight = parseInt(localStorage.getItem('warroom_home_chat_height'),10);
+    if(Number.isInteger(savedTable)) homeTableSizeIndex = Math.min(Math.max(savedTable,0),HOME_TABLE_SIZES.length-1);
+    if(Number.isInteger(savedChat)) homeChatSizeIndex = Math.min(Math.max(savedChat,0),HOME_CHAT_SIZES.length-1);
+    if(Number.isInteger(savedChatHeight)) homeChatHeightIndex = Math.min(Math.max(savedChatHeight,0),HOME_CHAT_HEIGHTS.length-1);
+  }catch(e){}
+  $('#homeTableSizeDown')?.addEventListener('click',()=>{
+    homeTableSizeIndex = Math.max(0,homeTableSizeIndex-1);
+    applyHomeSizing();
+  });
+  $('#homeTableSizeUp')?.addEventListener('click',()=>{
+    homeTableSizeIndex = Math.min(HOME_TABLE_SIZES.length-1,homeTableSizeIndex+1);
+    applyHomeSizing();
+  });
+  $('#homeChatSizeDown')?.addEventListener('click',()=>{
+    homeChatSizeIndex = Math.max(0,homeChatSizeIndex-1);
+    applyHomeSizing();
+  });
+  $('#homeChatSizeUp')?.addEventListener('click',()=>{
+    homeChatSizeIndex = Math.min(HOME_CHAT_SIZES.length-1,homeChatSizeIndex+1);
+    applyHomeSizing();
+  });
+  $('#homeChatHeightDown')?.addEventListener('click',()=>{
+    homeChatHeightIndex = Math.max(0,homeChatHeightIndex-1);
+    applyHomeSizing();
+  });
+  $('#homeChatHeightUp')?.addEventListener('click',()=>{
+    homeChatHeightIndex = Math.min(HOME_CHAT_HEIGHTS.length-1,homeChatHeightIndex+1);
+    applyHomeSizing();
+  });
+  applyHomeSizing();
 }
-function updateAppearanceEditorLabels(){
-  if(!appearanceDraft) return;
-  const table=$('#appearanceTableValue'), width=$('#appearanceChatWidthValue'), height=$('#appearanceChatHeightValue'), font=$('#appearanceFontSizeValue');
-  if(table) table.textContent=Math.round((HOME_TABLE_SIZES[appearanceDraft.tableIndex]||1)*100)+'%';
-  if(width) width.textContent=(HOME_CHAT_WIDTHS[appearanceDraft.chatWidthIndex]||680)+'px';
-  if(height) height.textContent=(HOME_CHAT_HEIGHTS[appearanceDraft.chatHeightIndex]||260)+'px';
-  if(font) font.textContent=appearanceDraft.fontSize==='small'?'Small':appearanceDraft.fontSize==='large'?'Large':appearanceDraft.fontSize==='xlarge'?'Extra large':'Normal';
-}
-function setupAppearance(){ applyAppearanceValues(getSavedAppearance()); }
 
 const esc = s => (s ?? '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -1616,13 +1654,26 @@ function setDensity(density){
 }
 
 function setFontSize(size){
-  const allowed=['small','normal','large','xlarge'];
-  updateAppearanceDraft({fontSize:allowed.includes(size)?size:'normal'});
+  const allowed = ['small','normal','large','xlarge'];
+  const value = allowed.includes(size) ? size : 'normal';
+  document.body.setAttribute('data-font-size', value);
+  try{ localStorage.setItem('warroom_font_size', value); }catch(e){}
+  renderSettings();
 }
+
 function setFontFamily(family){
-  const value=Object.prototype.hasOwnProperty.call(FONT_FAMILIES,family)?family:'inter';
-  updateAppearanceDraft({fontFamily:value});
+  const fonts = {
+    inter: "'Inter',system-ui,-apple-system,sans-serif",
+    system: "system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+    serif: "Georgia,'Times New Roman',serif",
+    mono: "'SFMono-Regular',Consolas,'Liberation Mono',monospace"
+  };
+  const value = Object.prototype.hasOwnProperty.call(fonts, family) ? family : 'inter';
+  document.body.style.setProperty('--warroom-font-family', fonts[value]);
+  try{ localStorage.setItem('warroom_font_family', value); }catch(e){}
+  renderSettings();
 }
+
 
 function setChatPosition(position){
   document.body.classList.toggle('chat-position-top', position === 'top');
@@ -1657,61 +1708,29 @@ function renderSettings(){
       </div>
     </div>`;
 
-  const appearance = appearanceDraft || getSavedAppearance();
-  const appearanceEditor = appearanceEditorOpen ? `
-    <div class="settings-appearance-editor">
-      <div class="settings-editor-head">
-        <div class="settings-editor-title">Live layout & typography</div>
-        <div class="settings-editor-help">Changes preview immediately. Nothing is saved until you press Save settings.</div>
+  const fontSizeRow = `
+    <div class="settings-row">
+      <div class="settings-label">Font size</div>
+      <div class="settings-btns">
+        <button class="btn-ghost btn-small settings-fontsize-btn${fontSize === 'small' ? ' active' : ''}" data-fontsize="small">Small</button>
+        <button class="btn-ghost btn-small settings-fontsize-btn${fontSize === 'normal' ? ' active' : ''}" data-fontsize="normal">Normal</button>
+        <button class="btn-ghost btn-small settings-fontsize-btn${fontSize === 'large' ? ' active' : ''}" data-fontsize="large">Large</button>
+        <button class="btn-ghost btn-small settings-fontsize-btn${fontSize === 'xlarge' ? ' active' : ''}" data-fontsize="xlarge">Extra large</button>
       </div>
-      <div class="settings-control">
-        <div class="settings-control-label"><span>Home tables</span><strong id="appearanceTableValue">${Math.round((HOME_TABLE_SIZES[appearance.tableIndex]||1)*100)}%</strong></div>
-        <input id="appearanceTableRange" type="range" min="0" max="${HOME_TABLE_SIZES.length-1}" step="1" value="${appearance.tableIndex}">
-      </div>
-      <div class="settings-control">
-        <div class="settings-control-label"><span>AI chat width</span><strong id="appearanceChatWidthValue">${HOME_CHAT_WIDTHS[appearance.chatWidthIndex]||680}px</strong></div>
-        <input id="appearanceChatWidthRange" type="range" min="0" max="${HOME_CHAT_WIDTHS.length-1}" step="1" value="${appearance.chatWidthIndex}">
-      </div>
-      <div class="settings-control">
-        <div class="settings-control-label"><span>AI chat height</span><strong id="appearanceChatHeightValue">${HOME_CHAT_HEIGHTS[appearance.chatHeightIndex]||260}px</strong></div>
-        <input id="appearanceChatHeightRange" type="range" min="0" max="${HOME_CHAT_HEIGHTS.length-1}" step="1" value="${appearance.chatHeightIndex}">
-      </div>
-      <div class="settings-control">
-        <div class="settings-control-label"><span>Font size</span><strong id="appearanceFontSizeValue">${appearance.fontSize==='small'?'Small':appearance.fontSize==='large'?'Large':appearance.fontSize==='xlarge'?'Extra large':'Normal'}</strong></div>
-        <div class="settings-btns">
-          <button class="btn-ghost btn-small appearance-font-btn${appearance.fontSize==='small'?' active':''}" data-appearance-font="small">Small</button>
-          <button class="btn-ghost btn-small appearance-font-btn${appearance.fontSize==='normal'?' active':''}" data-appearance-font="normal">Normal</button>
-          <button class="btn-ghost btn-small appearance-font-btn${appearance.fontSize==='large'?' active':''}" data-appearance-font="large">Large</button>
-          <button class="btn-ghost btn-small appearance-font-btn${appearance.fontSize==='xlarge'?' active':''}" data-appearance-font="xlarge">Extra large</button>
-        </div>
-      </div>
-      <div class="settings-control">
-        <div class="settings-control-label"><span>Font style</span></div>
-        <select id="appearanceFontFamily" class="settings-font-select">
-          <option value="inter" ${appearance.fontFamily==='inter'?'selected':''}>Inter</option>
-          <option value="system" ${appearance.fontFamily==='system'?'selected':''}>System</option>
-          <option value="serif" ${appearance.fontFamily==='serif'?'selected':''}>Serif</option>
-          <option value="mono" ${appearance.fontFamily==='mono'?'selected':''}>Monospace</option>
+    </div>`;
+
+  const fontFamilyRow = `
+    <div class="settings-row">
+      <div class="settings-label">Font style</div>
+      <div class="settings-btns">
+        <select id="fontFamilySelect" class="settings-font-select">
+          <option value="inter" ${fontFamily === 'inter' ? 'selected' : ''}>Inter</option>
+          <option value="system" ${fontFamily === 'system' ? 'selected' : ''}>System</option>
+          <option value="serif" ${fontFamily === 'serif' ? 'selected' : ''}>Serif</option>
+          <option value="mono" ${fontFamily === 'mono' ? 'selected' : ''}>Monospace</option>
         </select>
       </div>
-      <div class="settings-live-preview">
-        <div class="settings-live-preview-title">Live preview</div>
-        <div class="settings-preview-chat">
-          <div class="settings-preview-head">AI Chat <span>Gemini</span></div>
-          <div class="settings-preview-body"><div class="settings-preview-chip">Who has the lowest donations?</div><div class="settings-preview-ai">War Room AI<br><strong>Example response</strong> — selected settings are applied live.</div></div>
-        </div>
-        <div class="settings-preview-table">
-          <div class="settings-preview-row settings-preview-header"><span>#</span><span>NAME</span><span>ROLE</span><span>TH</span><span>DONATED</span></div>
-          <div class="settings-preview-row"><span>1</span><span>Member One</span><span>Member</span><span>15</span><span>2,357</span></div>
-          <div class="settings-preview-row"><span>2</span><span>Member Two</span><span>Elder</span><span>14</span><span>1,613</span></div>
-        </div>
-      </div>
-      <div class="settings-editor-actions"><button class="btn-ghost btn-small" id="cancelAppearanceBtn">Cancel</button><button class="btn btn-small" id="saveAppearanceBtn">Save settings</button></div>
-    </div>
-  ` : `
-    <div class="settings-saved-card"><div><strong>Home layout & typography</strong><span>Table size, AI width/height, font size and font style are saved.</span></div><button class="btn-ghost btn-small" id="editAppearanceBtn">Customize</button></div>
-  `;
-
+    </div>`;
 
   const pollSeconds = Math.round(getPollIntervalMs() / 1000);
   const pollRow = `
@@ -1744,7 +1763,8 @@ function renderSettings(){
   const body = `
     ${themeRow}
     ${densityRow}
-    ${appearanceEditor}
+    ${fontSizeRow}
+    ${fontFamilyRow}
     ${pollRow}
     ${chatPositionRow}
     <div class="settings-row settings-row-order">
@@ -1766,15 +1786,6 @@ document.addEventListener('click', (e) => {
   if(fontSizeBtn){ setFontSize(fontSizeBtn.dataset.fontsize); return; }
   const fontSelect = e.target.closest('#fontFamilySelect');
   if(fontSelect){ setFontFamily(fontSelect.value); return; }
-  const editAppearanceBtn = e.target.closest('#editAppearanceBtn');
-  if(editAppearanceBtn){ startAppearanceEditor(); return; }
-  const cancelAppearanceBtn = e.target.closest('#cancelAppearanceBtn');
-  if(cancelAppearanceBtn){ cancelAppearanceEditor(); return; }
-  const saveAppearanceBtn = e.target.closest('#saveAppearanceBtn');
-  if(saveAppearanceBtn){ saveAppearanceEditor(); return; }
-  const appearanceFontBtn = e.target.closest('.appearance-font-btn');
-  if(appearanceFontBtn){ setFontSize(appearanceFontBtn.dataset.appearanceFont); renderSettings(); return; }
-
   const applyPollBtn = e.target.closest('#applyPollInterval');
   if(applyPollBtn){
     const input = $('#pollIntervalInput');
@@ -1788,13 +1799,6 @@ document.addEventListener('click', (e) => {
   }
   const chatPosBtn = e.target.closest('.settings-chatpos-btn');
   if(chatPosBtn){ setChatPosition(chatPosBtn.dataset.chatpos); return; }
-});
-
-document.addEventListener('input',(e)=>{
-  if(e.target.id==='appearanceTableRange') updateAppearanceDraft({tableIndex:parseInt(e.target.value,10)||0});
-  else if(e.target.id==='appearanceChatWidthRange') updateAppearanceDraft({chatWidthIndex:parseInt(e.target.value,10)||0});
-  else if(e.target.id==='appearanceChatHeightRange') updateAppearanceDraft({chatHeightIndex:parseInt(e.target.value,10)||0});
-  else if(e.target.id==='appearanceFontFamily') setFontFamily(e.target.value);
 });
 
 // --- Panel order: hold-and-drag reordering (HTML5 drag-and-drop) ---
@@ -1841,7 +1845,17 @@ document.addEventListener('drop', (e) => {
 // sections in the saved order as soon as the dashboard's markup exists.
 document.documentElement.setAttribute('data-theme', localStorage.getItem('warroom_theme') || 'light');
 document.body.setAttribute('data-density', localStorage.getItem('warroom_density') || 'normal');
-setupAppearance();
+document.body.setAttribute('data-font-size', localStorage.getItem('warroom_font_size') || 'normal');
+(function(){
+  const fonts = {
+    inter: "'Inter',system-ui,-apple-system,sans-serif",
+    system: "system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+    serif: "Georgia,'Times New Roman',serif",
+    mono: "'SFMono-Regular',Consolas,'Liberation Mono',monospace"
+  };
+  const key = localStorage.getItem('warroom_font_family') || 'inter';
+  document.body.style.setProperty('--warroom-font-family', fonts[key] || fonts.inter);
+})();
 document.body.classList.toggle('chat-position-top', (localStorage.getItem('warroom_chat_position') || 'bottom') === 'top');
 applySectionOrder();
 
