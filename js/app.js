@@ -2751,6 +2751,7 @@ async function toggleChatSidebar(){
     renderChatSidebarList();
   }
   sidebar.classList.toggle('open', willOpen);
+  sidebar.style.marginLeft = willOpen ? '0' : '-250px';
   $('#historyBtn').classList.toggle('on', willOpen);
   $('#historyBtn').textContent = willOpen ? '× Hide' : '☰ History';
   $('#historyBtn').title = willOpen ? 'Hide chat history' : 'Show chat history';
