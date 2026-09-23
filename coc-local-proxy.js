@@ -88,7 +88,36 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // Serve the dashboard's split CSS/JS assets from the same origin.\n  // Keep this scoped to /css and /js so API routes remain untouched.\n  if (req.method === "GET" && (req.url.startsWith("/css/") || req.url.startsWith("/js/"))) {\n    const pathname = new URL(req.url, "http://localhost").pathname;\n    const relativePath = pathname.replace(/^\\/(?:css|js)\\//, (m) => m.slice(1));\n    const assetPath = path.resolve(__dirname, relativePath);\n    const rootPath = path.resolve(__dirname);\n    if (!assetPath.startsWith(rootPath + path.sep)) {\n      res.writeHead(403, { "Content-Type": "text/plain" });\n      res.end("Forbidden");\n      return;\n    }\n    const ext = path.extname(assetPath).toLowerCase();\n    const contentTypes = {\n      ".css": "text/css; charset=utf-8",\n      ".js": "application/javascript; charset=utf-8"\n    };\n    fs.readFile(assetPath, (err, data) => {\n      if (err) {\n        res.writeHead(404, { "Content-Type": "text/plain" });\n        res.end("Asset not found");\n        return;\n      }\n      res.writeHead(200, { "Content-Type": contentTypes[ext] || "application/octet-stream" });\n      res.end(data);\n    });\n    return;\n  }\n\n  if (req.method === "GET" && (req.url === "/" || req.url === "/war-room.html")) {
+  // Serve the dashboard's split CSS/JS assets from the same origin.
+  // Keep this scoped to /css and /js so API routes remain untouched.
+  if (req.method === "GET" && (req.url.startsWith("/css/") || req.url.startsWith("/js/"))) {
+    const pathname = new URL(req.url, "http://localhost").pathname;
+    const relativePath = pathname.replace(/^\/(?:css|js)\//, (m) => m.slice(1));
+    const assetPath = path.resolve(__dirname, relativePath);
+    const rootPath = path.resolve(__dirname);
+    if (!assetPath.startsWith(rootPath + path.sep)) {
+      res.writeHead(403, { "Content-Type": "text/plain" });
+      res.end("Forbidden");
+      return;
+    }
+    const ext = path.extname(assetPath).toLowerCase();
+    const contentTypes = {
+      ".css": "text/css; charset=utf-8",
+      ".js": "application/javascript; charset=utf-8"
+    };
+    fs.readFile(assetPath, (err, data) => {
+      if (err) {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("Asset not found");
+        return;
+      }
+      res.writeHead(200, { "Content-Type": contentTypes[ext] || "application/octet-stream" });
+      res.end(data);
+    });
+    return;
+  }
+
+  if (req.method === "GET" && (req.url === "/" || req.url === "/war-room.html")) {
     const filePath = path.join(__dirname, "war-room.html");
     fs.readFile(filePath, (err, data) => {
       if (err) {
