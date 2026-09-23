@@ -593,7 +593,10 @@
   }
 
   /* Clan strip */
-  #secHome{ scroll-margin-top:12px; padding-bottom:168px; }
+  /* Reserve enough flow space for the absolutely positioned Home AI panel.
+     This tracks the selected AI height so the Members panel can never slide
+     underneath the chat when the user resizes it. */
+  #secHome{ scroll-margin-top:12px; padding-bottom:calc(var(--home-chat-height) + 54px); }
   .clan-hero{
     max-width:960px;
     margin:0 auto;
@@ -1202,7 +1205,7 @@
   @media (max-width:900px){
     #dashboard[data-view="home"] .split-area{ display:block; position:relative; }
     #dashboard[data-view="home"] .col-main{ display:block; width:100%; }
-    #dashboard[data-view="home"] #secHome{ padding-bottom:230px; }
+    #dashboard[data-view="home"] #secHome{ padding-bottom:calc(var(--home-chat-height) + 54px); }
     #dashboard[data-view="home"] .col-chat{
       position:absolute;
       top:116px;
@@ -1287,8 +1290,8 @@
           <span class="home-size-value" id="homeChatHeightValue">100%</span>
           <button class="btn-ghost btn-small" id="homeChatHeightUp" title="Make Home AI chat taller">+</button>
         </span>
-        <button class="btn-ghost btn-small" id="homeSizeControlsToggle" title="Hide Home size controls">Hide</button>
       </div>
+      <button class="btn-ghost btn-small" id="homeSizeControlsToggle" title="Hide Home size controls">Hide</button>
       <button class="btn-ghost btn-small" id="collapseAllBtn">Collapse all panels</button>
       <button class="btn btn-ghost" id="refreshBtn">Refresh data</button>
     </div>
