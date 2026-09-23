@@ -169,6 +169,31 @@
   .note-delete:hover{ color: var(--red); }
 
   table{ width:100%; border-collapse: collapse; font-size: 12.8px; }
+  .table-scroll-x{
+    width:100%;
+    max-width:100%;
+    overflow-x:auto;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    scrollbar-width:thin;
+  }
+  .table-scroll-x table{ min-width:720px; }
+  .members-table-scroll table{ min-width:760px; }
+  .table-pager{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding-top:12px;
+  }
+  .table-pager .page-label{
+    min-width:92px;
+    text-align:center;
+    color:var(--text-dim);
+    font-size:11.5px;
+  }
+  .table-pager button{ min-width:88px; }
   th{ text-align:left; color: var(--text-faint); font-weight:600; text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.04em; padding: 6px 8px; border-bottom: 1px solid var(--panel-border); }
   th.sortable{ cursor: pointer; user-select: none; }
   th.sortable:hover{ color: var(--gold); }
@@ -228,6 +253,23 @@
   .btn-expand{ background: transparent; border: 1px solid var(--panel-border); color: var(--text-dim); width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-size: 14px; line-height:1; flex-shrink:0; }
   .btn-expand:hover{ border-color: var(--gold-dim); color: var(--text); }
   .btn-expand.on{ border-color: var(--gold-dim); color: var(--gold); }
+  .chat-history-toggle{
+    width:auto;
+    min-width:92px;
+    padding:0 9px;
+    font-size:11px;
+    white-space:nowrap;
+  }
+  .col-chat.chat-host-expanded{
+    position:static !important;
+    width:auto !important;
+    max-width:none !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    transform:none !important;
+    z-index:1000 !important;
+  }
   .chat-head-btns{ display:flex; gap: 6px; flex-shrink:0; align-items:center; }
   .ai-provider-select{
     background: var(--bg-raised); border: 1px solid var(--panel-border); color: var(--text-dim);
@@ -610,7 +652,7 @@
     top:112px;
     left:50%;
     transform:translateX(-50%);
-    width:min(680px,calc(100% - 56px));
+    width:min(820px,calc(100% - 40px));
     height:auto;
     min-width:0;
     padding:0;
@@ -701,7 +743,7 @@
     gap:8px;
     padding:0;
     margin:10px auto 0;
-    max-width:680px;
+    max-width:820px;
   }
   .chip{
     padding:8px 14px;
@@ -822,7 +864,7 @@
   #dashboard[data-view="home"] .col-chat{
     grid-column:1; grid-row:2;
     position:static; top:auto; left:auto; transform:none;
-    width:min(680px,100%); max-width:680px; min-width:0;
+    width:min(680px,100%); max-width:820px; min-width:0;
     height:auto; margin:0 auto 24px; padding:0; display:block; z-index:auto;
   }
   #dashboard[data-view="home"] #secSummary{
@@ -1133,7 +1175,7 @@
                     <option value="sarvam">Sarvam</option>
                     <option value="gemini">Gemini</option>
                   </select>
-                  <button class="btn-expand" id="historyBtn" title="Chat history">🕘</button>
+                  <button class="btn-expand chat-history-toggle" id="historyBtn" title="Show chat history">☰ History</button>
                   <button class="btn-expand" id="expandChat" title="Expand chat">⤢</button>
                 </div>
               </div>
@@ -1164,7 +1206,7 @@
 
 <script>
 const LOCAL_PROXY = ''; // same-origin: works locally (this server serves the page too) and once hosted on Render
-const state = { clanTag:null, clan:null, war:null, warlog:null, capital:null, cwl:null, cwlHistory:[], warHistory:[], capitalHistory:[], notes:[], allNotes:[], notebook:'General', notebooks:['General'], thLevels:{}, currentConversationId:null, conversations:[], attackLog:[] };
+const state = { clanTag:null, clan:null, war:null, warlog:null, capital:null, cwl:null, cwlHistory:[], warHistory:[], capitalHistory:[], notes:[], allNotes:[], notebook:'General', notebooks:['General'], thLevels:{}, currentConversationId:null, conversations:[], attackLog:[], memberPage:0 };
 let chatHistory = []; // running list of {role, content} for actual conversation memory
 let activeChatAbortController = null;
 let chatRequestCancelled = false;
@@ -2666,12 +2708,18 @@ function renderMembers(){
     return 0;
   });
 
+  const pageSize = 10;
+  const pageCount = Math.max(1, Math.ceil(members.length / pageSize));
+  if(!Number.isInteger(state.memberPage)) state.memberPage = 0;
+  state.memberPage = Math.min(Math.max(state.memberPage, 0), pageCount - 1);
+  const pageStart = state.memberPage * pageSize;
+  const pageMembers = members.slice(pageStart, pageStart + pageSize);
   const headerHtml = MEMBER_COLUMNS.map(col => {
     const arrow = memberSort.key === col.key ? (memberSort.dir === 'asc' ? ' ▲' : ' ▼') : '';
     return `<th class="sortable" data-key="${col.key}">${esc(col.label)}${arrow}</th>`;
   }).join('');
 
-  const allRows = members.map(m => {
+  const allRows = pageMembers.map(m => {
     const roleClass = m.role === 'leader' ? 'role-leader' : (m.role === 'coLeader' ? 'role-coLeader' : '');
     const th = state.thLevels[m.tag] ?? '—';
     return `<tr>
@@ -2685,16 +2733,19 @@ function renderMembers(){
       <td>${esc(m.donationsReceived)}</td>
     </tr>`;
   });
-  const { rowsHtml, moreHtml } = limitRows('membersPanel', allRows, 10);
+  const rowsHtml = allRows.join('');
+  const moreHtml = pageCount > 1 ? `<div class="table-pager" aria-label="Member pages"><button class="btn-ghost btn-small" id="membersPrevBtn" ${state.memberPage === 0 ? 'disabled' : ''}>← Previous</button><span class="page-label">Page ${state.memberPage + 1} / ${pageCount}</span><button class="btn-ghost btn-small" id="membersNextBtn" ${state.memberPage === pageCount - 1 ? 'disabled' : ''}>Next →</button></div>` : '';
 
   const needsThButton = members.some(m => state.thLevels[m.tag] == null);
   const thButtonHtml = `<button class="btn-ghost btn-small" id="loadThBtn">${needsThButton ? 'Load TH levels' : 'Refresh TH levels'}</button>`;
 
   const body = `
-    <table>
-      <thead><tr>${headerHtml}</tr></thead>
-      <tbody>${rowsHtml}</tbody>
-    </table>
+    <div class="table-scroll-x members-table-scroll">
+      <table>
+        <thead><tr>${headerHtml}</tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>
     ${moreHtml}
   `;
   p.innerHTML = renderCollapsiblePanel('membersPanel', `Members (${members.length})`, body, thButtonHtml);
@@ -2702,6 +2753,32 @@ function renderMembers(){
   document.querySelectorAll('#membersPanel th.sortable').forEach(th => {
     th.addEventListener('click', () => setMemberSort(th.dataset.key));
   });
+  const prevBtn = $('#membersPrevBtn');
+  const nextBtn = $('#membersNextBtn');
+  if(prevBtn) prevBtn.addEventListener('click', () => {
+    if(state.memberPage > 0){ state.memberPage--; renderMembers(); }
+  });
+  if(nextBtn) nextBtn.addEventListener('click', () => {
+    if(state.memberPage < pageCount - 1){ state.memberPage++; renderMembers(); }
+  });
+
+  const tableWrap = p.querySelector('.members-table-scroll');
+  if(tableWrap && pageCount > 1){
+    let touchStartX = null, touchStartY = null;
+    tableWrap.addEventListener('touchstart', e => {
+      const t = e.changedTouches[0]; touchStartX = t.clientX; touchStartY = t.clientY;
+    }, { passive:true });
+    tableWrap.addEventListener('touchend', e => {
+      if(touchStartX == null) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStartX, dy = t.clientY - touchStartY;
+      touchStartX = null; touchStartY = null;
+      if(Math.abs(dx) < 55 || Math.abs(dx) <= Math.abs(dy)) return;
+      if(dx < 0 && state.memberPage < pageCount - 1){ state.memberPage++; renderMembers(); }
+      else if(dx > 0 && state.memberPage > 0){ state.memberPage--; renderMembers(); }
+    }, { passive:true });
+  }
+
   const loadBtn = $('#loadThBtn');
   if(loadBtn) loadBtn.addEventListener('click', () => loadTownHallLevels(!needsThButton));
 }
@@ -3757,6 +3834,8 @@ function renderChatSidebarList(){
 function closeChatSidebar(){
   $('#chatSidebar').classList.remove('open');
   $('#historyBtn').classList.remove('on');
+  $('#historyBtn').textContent = '☰ History';
+  $('#historyBtn').title = 'Show chat history';
 }
 
 async function toggleChatSidebar(){
@@ -3768,6 +3847,8 @@ async function toggleChatSidebar(){
   }
   sidebar.classList.toggle('open', willOpen);
   $('#historyBtn').classList.toggle('on', willOpen);
+  $('#historyBtn').textContent = willOpen ? '× Hide' : '☰ History';
+  $('#historyBtn').title = willOpen ? 'Hide chat history' : 'Show chat history';
 }
 
 function setChatBusy(busy){
@@ -3797,6 +3878,8 @@ $('#expandChat').addEventListener('click', () => setChatExpanded(!chatPanelEl.cl
 $('#chatBackdrop').addEventListener('click', () => setChatExpanded(false));
 
 function setChatExpanded(on){
+  const chatHost = document.querySelector('.col-chat');
+  if(chatHost) chatHost.classList.toggle('chat-host-expanded', on);
   chatPanelEl.classList.toggle('expanded', on);
   $('#chatBackdrop').classList.toggle('visible', on);
   $('#expandChat').textContent = on ? '×' : '⤢';
