@@ -2812,7 +2812,11 @@ resizeChatInput();
 
 $('#newChatBtn').addEventListener('click', startNewChat);
 $('#historyBtn').addEventListener('click', (e) => { e.stopPropagation(); toggleChatSidebar(); });
-$('#closeSidebarBtn').addEventListener('click', closeChatSidebar);
+$('#closeSidebarBtn').addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  closeChatSidebar();
+});
 
 const chatPanelEl = document.querySelector('.chat-panel');
 $('#expandChat').addEventListener('click', () => setChatExpanded(!chatPanelEl.classList.contains('expanded')));
