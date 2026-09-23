@@ -81,6 +81,17 @@
   .poll-indicator{ font-size: 10.5px; color: var(--text-faint); white-space:nowrap; align-self:center; }
   .poll-indicator.live{ color: var(--green); }
   .settings-poll-input{ width:64px; background:var(--bg-raised); border:1px solid var(--panel-border); color:var(--text); border-radius:6px; padding:6px 8px; font-size:12.5px; }
+  .settings-font-select{
+    min-width:130px;
+    background:var(--bg-raised);
+    border:1px solid var(--panel-border);
+    color:var(--text);
+    border-radius:6px;
+    padding:6px 8px;
+    font-size:12px;
+    font-family:var(--warroom-font-family);
+  }
+
   .status-line.error{ color: var(--red); }
   .status-line.ok{ color: var(--green); }
   .status-line.loading{ color: var(--text-dim); }
@@ -899,6 +910,107 @@
     }
   }
 
+
+  /* Restore the original Home composition: centered hero + clan card + floating
+     composer, with reserved space so the composer never overlaps the first table.
+     The feature dashboards keep using the existing dedicated-view system. */
+  #dashboard[data-view="home"] .split-area{
+    display:block;
+    position:relative;
+    width:100%;
+    min-height:0;
+  }
+  #dashboard[data-view="home"] .col-main{
+    display:block;
+    width:100%;
+    min-width:0;
+    overflow:visible;
+    padding:0;
+  }
+  #dashboard[data-view="home"] #secHome{
+    display:block;
+    width:100%;
+    max-width:960px;
+    margin:0 auto;
+    padding-bottom:230px;
+  }
+  #dashboard[data-view="home"] .col-chat{
+    position:absolute;
+    top:112px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(680px,calc(100% - 56px));
+    max-width:680px;
+    min-width:0;
+    height:auto;
+    margin:0;
+    padding:0;
+    display:block;
+    z-index:8;
+  }
+  #dashboard[data-view="home"] #secSummary,
+  #dashboard[data-view="home"] #secWar,
+  #dashboard[data-view="home"] #secCapital{
+    width:100%;
+    max-width:960px;
+    margin:0 auto 16px;
+  }
+
+  /* Never let a hidden chat warning reserve or block clicks. The warning is
+     controlled by JS, and the hidden attribute must always win over view CSS. */
+  #limitToast[hidden],
+  #chatSaveError[hidden]{ display:none !important; }
+
+  /* User-controlled typography. */
+  :root{
+    --warroom-font-scale:1;
+    --warroom-font-family:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  body,
+  button,
+  input,
+  textarea,
+  select{
+    font-family:var(--warroom-font-family) !important;
+  }
+  h1,h2,h3,.brand{
+    font-family:var(--warroom-font-family) !important;
+  }
+  body[data-font-size="small"]{ --warroom-font-scale:.90; }
+  body[data-font-size="normal"]{ --warroom-font-scale:1; }
+  body[data-font-size="large"]{ --warroom-font-scale:1.12; }
+  body[data-font-size="xlarge"]{ --warroom-font-scale:1.24; }
+  body[data-font-size] .panel h3{ font-size:calc(14.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .panel .empty{ font-size:calc(13px * var(--warroom-font-scale)); }
+  body[data-font-size] table{ font-size:calc(12.8px * var(--warroom-font-scale)); }
+  body[data-font-size] th{ font-size:calc(10.5px * var(--warroom-font-scale)); }
+  body[data-font-size] td{ font-size:calc(12.8px * var(--warroom-font-scale)); }
+  body[data-font-size] .btn{ font-size:calc(13.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .btn-small{ font-size:calc(11.5px * var(--warroom-font-scale)); }
+  body[data-font-size] label{ font-size:calc(12px * var(--warroom-font-scale)); }
+  body[data-font-size] .settings-label{ font-size:calc(12.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .settings-order-row{ font-size:calc(12.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .note-text{ font-size:calc(13px * var(--warroom-font-scale)); }
+  body[data-font-size] .note-meta{ font-size:calc(10.5px * var(--warroom-font-scale)); }
+  body[data-font-size] .chat-input-area textarea{ font-size:calc(15px * var(--warroom-font-scale)); }
+  body[data-font-size] .chip{ font-size:calc(13px * var(--warroom-font-scale)); }
+  body[data-font-size] .topbar .tagline{ font-size:calc(13px * var(--warroom-font-scale)); }
+
+  @media (max-width:900px){
+    #dashboard[data-view="home"] .split-area{ display:block; position:relative; }
+    #dashboard[data-view="home"] .col-main{ display:block; width:100%; }
+    #dashboard[data-view="home"] #secHome{ padding-bottom:230px; }
+    #dashboard[data-view="home"] .col-chat{
+      position:absolute;
+      top:116px;
+      left:50%;
+      transform:translateX(-50%);
+      width:calc(100% - 28px);
+      max-width:680px;
+      margin:0;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -1300,6 +1412,28 @@ function setDensity(density){
   renderSettings();
 }
 
+function setFontSize(size){
+  const allowed = ['small','normal','large','xlarge'];
+  const value = allowed.includes(size) ? size : 'normal';
+  document.body.setAttribute('data-font-size', value);
+  try{ localStorage.setItem('warroom_font_size', value); }catch(e){}
+  renderSettings();
+}
+
+function setFontFamily(family){
+  const fonts = {
+    inter: "'Inter',system-ui,-apple-system,sans-serif",
+    system: "system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+    serif: "Georgia,'Times New Roman',serif",
+    mono: "'SFMono-Regular',Consolas,'Liberation Mono',monospace"
+  };
+  const value = Object.prototype.hasOwnProperty.call(fonts, family) ? family : 'inter';
+  document.body.style.setProperty('--warroom-font-family', fonts[value]);
+  try{ localStorage.setItem('warroom_font_family', value); }catch(e){}
+  renderSettings();
+}
+
+
 function setChatPosition(position){
   document.body.classList.toggle('chat-position-top', position === 'top');
   try{ localStorage.setItem('warroom_chat_position', position); }catch(e){}
@@ -1311,6 +1445,8 @@ function renderSettings(){
   if(!p) return;
   const theme = localStorage.getItem('warroom_theme') || 'light';
   const density = localStorage.getItem('warroom_density') || 'normal';
+  const fontSize = localStorage.getItem('warroom_font_size') || 'normal';
+  const fontFamily = localStorage.getItem('warroom_font_family') || 'inter';
 
   const themeRow = `
     <div class="settings-row">
@@ -1328,6 +1464,30 @@ function renderSettings(){
         <button class="btn-ghost btn-small settings-density-btn${density === 'compact' ? ' active' : ''}" data-density="compact">Compact</button>
         <button class="btn-ghost btn-small settings-density-btn${density === 'normal' ? ' active' : ''}" data-density="normal">Normal</button>
         <button class="btn-ghost btn-small settings-density-btn${density === 'comfortable' ? ' active' : ''}" data-density="comfortable">Comfortable</button>
+      </div>
+    </div>`;
+
+  const fontSizeRow = `
+    <div class="settings-row">
+      <div class="settings-label">Font size</div>
+      <div class="settings-btns">
+        <button class="btn-ghost btn-small settings-fontsize-btn${fontSize === 'small' ? ' active' : ''}" data-fontsize="small">Small</button>
+        <button class="btn-ghost btn-small settings-fontsize-btn${fontSize === 'normal' ? ' active' : ''}" data-fontsize="normal">Normal</button>
+        <button class="btn-ghost btn-small settings-fontsize-btn${fontSize === 'large' ? ' active' : ''}" data-fontsize="large">Large</button>
+        <button class="btn-ghost btn-small settings-fontsize-btn${fontSize === 'xlarge' ? ' active' : ''}" data-fontsize="xlarge">Extra large</button>
+      </div>
+    </div>`;
+
+  const fontFamilyRow = `
+    <div class="settings-row">
+      <div class="settings-label">Font style</div>
+      <div class="settings-btns">
+        <select id="fontFamilySelect" class="settings-font-select">
+          <option value="inter" ${fontFamily === 'inter' ? 'selected' : ''}>Inter</option>
+          <option value="system" ${fontFamily === 'system' ? 'selected' : ''}>System</option>
+          <option value="serif" ${fontFamily === 'serif' ? 'selected' : ''}>Serif</option>
+          <option value="mono" ${fontFamily === 'mono' ? 'selected' : ''}>Monospace</option>
+        </select>
       </div>
     </div>`;
 
@@ -1362,6 +1522,8 @@ function renderSettings(){
   const body = `
     ${themeRow}
     ${densityRow}
+    ${fontSizeRow}
+    ${fontFamilyRow}
     ${pollRow}
     ${chatPositionRow}
     <div class="settings-row settings-row-order">
@@ -1379,6 +1541,10 @@ document.addEventListener('click', (e) => {
   if(themeBtn){ setTheme(themeBtn.dataset.theme); return; }
   const densityBtn = e.target.closest('.settings-density-btn');
   if(densityBtn){ setDensity(densityBtn.dataset.density); return; }
+  const fontSizeBtn = e.target.closest('.settings-fontsize-btn');
+  if(fontSizeBtn){ setFontSize(fontSizeBtn.dataset.fontsize); return; }
+  const fontSelect = e.target.closest('#fontFamilySelect');
+  if(fontSelect){ setFontFamily(fontSelect.value); return; }
   const applyPollBtn = e.target.closest('#applyPollInterval');
   if(applyPollBtn){
     const input = $('#pollIntervalInput');
@@ -1438,6 +1604,17 @@ document.addEventListener('drop', (e) => {
 // sections in the saved order as soon as the dashboard's markup exists.
 document.documentElement.setAttribute('data-theme', localStorage.getItem('warroom_theme') || 'light');
 document.body.setAttribute('data-density', localStorage.getItem('warroom_density') || 'normal');
+document.body.setAttribute('data-font-size', localStorage.getItem('warroom_font_size') || 'normal');
+(function(){
+  const fonts = {
+    inter: "'Inter',system-ui,-apple-system,sans-serif",
+    system: "system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+    serif: "Georgia,'Times New Roman',serif",
+    mono: "'SFMono-Regular',Consolas,'Liberation Mono',monospace"
+  };
+  const key = localStorage.getItem('warroom_font_family') || 'inter';
+  document.body.style.setProperty('--warroom-font-family', fonts[key] || fonts.inter);
+})();
 document.body.classList.toggle('chat-position-top', (localStorage.getItem('warroom_chat_position') || 'bottom') === 'top');
 applySectionOrder();
 
