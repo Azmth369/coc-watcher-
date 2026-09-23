@@ -1,0 +1,135 @@
+  /* Dashboard */
+  #dashboard[hidden]{ display:none; }
+  #dashboard{ display:flex; flex-direction:column; flex:1; min-height:0; }
+  @media (max-width: 900px){ #dashboard{ flex:initial; } }
+  .clan-hero{ display:flex; align-items:center; gap: 18px; background: linear-gradient(135deg, #22293380, #1a1e2580); border: 1px solid var(--panel-border); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 20px; flex-shrink:0; }
+  .clan-hero img{ width: 64px; height: 64px; }
+  .clan-hero .name{ font-size: 21px; font-weight:700; color: var(--text); }
+  .clan-hero .tag{ color: var(--text-faint); font-size: 12.5px; margin-left: 6px; font-weight:400; font-family:'Inter',sans-serif; }
+  .clan-hero .desc{ color: var(--text-dim); font-size: 13px; margin-top: 4px; max-width: 520px; }
+  .stat-strip{ display:flex; gap: 26px; margin-left: auto; }
+  .stat{ text-align:right; }
+  .stat .v{ font-size: 19px; font-weight:700; color: var(--gold); font-family:'Cinzel',serif; }
+  .stat .l{ font-size: 10.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* Split area: left pane scrolls on its own, right (chat) pane stays put. */
+  .split-area{ display:flex; gap: 0; flex:1; min-height: 0; }
+  .split-area[hidden]{ display: none; }
+  .col-main{ flex: 0 0 50%; min-width: 260px; overflow-y:auto; padding-right:12px; }
+  .col-chat{ flex:1; min-width: 260px; display:flex; padding-left:12px; }
+  @media (max-width: 900px){
+    .split-area{ flex-direction:column; flex:initial; height:auto; }
+    .col-main{ overflow:visible; flex-basis:auto !important; padding-right:0; order:2; }
+    .col-chat{ height: 560px; padding-left:0; order:3; }
+    /* Default: chat sits below all the panels (today's behavior). The
+       "AI chat position" setting can flip this to put it right under the
+       clan hero instead, so it doesn't take scrolling past everything to
+       reach on a phone or tablet. */
+    body.chat-position-top .col-main{ order:3; }
+    body.chat-position-top .col-chat{ order:2; }
+  }
+
+  .panel{ background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 20px; }
+  .panel h3{ margin: 0; font-size: 14.5px; color: var(--text); display:flex; align-items:center; gap:8px; }
+  .panel h3 .dot{ width:6px; height:6px; border-radius:50%; background: var(--gold); }
+  .panel .empty{ color: var(--text-faint); font-size: 13px; padding: 6px 0; }
+  .panel-header-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom: 14px; gap:10px; }
+  .panel-header-row h3{ margin:0; }
+  .panel-header-btns{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .panel-body[hidden]{ display:none; }
+  .btn-small{ padding: 6px 12px; font-size: 11.5px; }
+
+  .settings-row{ display:flex; align-items:center; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid var(--panel-border); gap: 10px; }
+  .settings-row-order{ border-bottom: none; padding-bottom: 4px; }
+  .settings-label{ font-size: 12.5px; color: var(--text-dim); font-weight: 600; }
+  .settings-btns{ display:flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .settings-theme-btn.active, .settings-density-btn.active, .settings-chatpos-btn.active{ background: var(--gold); color: #17140d; border-color: var(--gold); }
+  .settings-order-list{ display:flex; flex-direction:column; gap: 6px; }
+  .settings-order-row{ display:flex; align-items:center; gap: 10px; background: var(--bg-raised); border: 1px solid var(--panel-border); border-radius: 7px; padding: 8px 10px; font-size: 12.5px; color: var(--text); cursor: grab; position: relative; }
+  .settings-order-row:active{ cursor: grabbing; }
+  .settings-order-row.dragging{ opacity: 0.4; }
+  .order-drag-handle{ color: var(--text-dim); font-size: 14px; line-height: 1; user-select: none; }
+  .settings-order-row.drag-over-top::before, .settings-order-row.drag-over-bottom::after{
+    content: ''; position: absolute; left: 8px; right: 8px; height: 2px; background: var(--gold);
+  }
+  .settings-order-row.drag-over-top::before{ top: -4px; }
+  .settings-order-row.drag-over-bottom::after{ bottom: -4px; }
+  .collapse-toggle{ white-space:nowrap; }
+  .scroll-table{ max-height: 420px; overflow-y: auto; }
+  .table-more-row{ text-align:center; padding-top: 10px; }
+  .save-error{ color: var(--red); font-size: 11.5px; margin-top: 8px; }
+
+  .note-add-row{ display:flex; gap: 8px; margin-bottom: 14px; align-items:flex-start; }
+  .notebook-picker-row{ display:flex; gap:8px; align-items:center; margin-bottom:12px; }
+  .notebook-picker-row select{ flex:1; background: var(--bg-raised); border: 1px solid var(--panel-border); border-radius: 8px; color: var(--text); padding: 7px 10px; font-size: 12.5px; font-family:'Inter',sans-serif; }
+  .note-add-row textarea{ flex:1; height: 44px; resize: vertical; }
+  .note-list{ display:flex; flex-direction:column; gap: 10px; max-height: 320px; overflow-y:auto; }
+  .note-item{ background: var(--bg-raised); border: 1px solid var(--panel-border); border-radius: 8px; padding: 10px 12px; }
+  .note-text{ font-size: 13px; color: var(--text); white-space: pre-wrap; line-height:1.5; }
+  .note-meta{ display:flex; justify-content:space-between; align-items:center; margin-top: 6px; font-size: 10.5px; color: var(--text-faint); }
+  .note-delete{ background:transparent; border:none; color: var(--text-faint); cursor:pointer; font-size: 15px; line-height:1; padding: 0 4px; }
+  .note-delete:hover{ color: var(--red); }
+
+  table{ width:100%; border-collapse: collapse; font-size: 12.8px; }
+  .table-scroll-x{
+    width:100%;
+    max-width:100%;
+    overflow-x:auto;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    scrollbar-width:thin;
+  }
+  .table-scroll-x table{ min-width:720px; }
+  .members-table-scroll table{ min-width:760px; }
+  .table-pager{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding-top:12px;
+  }
+  .table-pager .page-label{
+    min-width:92px;
+    text-align:center;
+    color:var(--text-dim);
+    font-size:11.5px;
+  }
+  .table-pager button{ min-width:88px; }
+  th{ text-align:left; color: var(--text-faint); font-weight:600; text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.04em; padding: 6px 8px; border-bottom: 1px solid var(--panel-border); }
+  th.sortable{ cursor: pointer; user-select: none; }
+  th.sortable:hover{ color: var(--gold); }
+  td{ padding: 8px 8px; border-bottom: 1px solid #262b34; color: var(--text-dim); }
+  tr:last-child td{ border-bottom:none; }
+  td.name{ color: var(--text); font-weight:500; }
+  /* Table density — set via Settings, defaults to the sizing above ("normal") */
+  body[data-density="compact"] table{ font-size: 11.2px; }
+  body[data-density="compact"] th{ padding: 4px 6px; font-size: 9.5px; }
+  body[data-density="compact"] td{ padding: 4px 6px; }
+  body[data-density="comfortable"] table{ font-size: 14px; }
+  body[data-density="comfortable"] th{ padding: 9px 10px; }
+  body[data-density="comfortable"] td{ padding: 12px 10px; }
+  .role-badge{ font-size: 10px; padding: 2px 7px; border-radius: 20px; background: #2a3038; color: var(--text-dim); }
+  /* Marks a name as one of our own clan members in tables that mix us with
+     opponents (e.g. the Attack Log's Attacker/Target columns) — a plain
+     underline, not a badge, so it doesn't compete visually with the
+     star/result colors already used in those same rows. */
+  .own-member{ text-decoration: underline; text-decoration-color: var(--gold-dim); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+  .role-leader{ background: #4a3418; color: var(--gold); }
+  .role-coLeader{ background: #2e3a2c; color: var(--green); }
+
+  .war-vs{ display:flex; align-items:center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+  .war-side{ flex:1; text-align:center; }
+  .war-side .clan-name{ font-size: 13px; color: var(--text); font-weight:600; }
+  .war-side .stars{ font-size: 24px; color: var(--gold); font-family:'Cinzel',serif; font-weight:700; margin: 4px 0; }
+  .war-side .destro{ font-size: 11.5px; color: var(--text-faint); }
+  .war-mid{ color: var(--text-faint); font-size: 11px; text-transform:uppercase; letter-spacing:0.08em; }
+  .war-state{ display:inline-block; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .ws-inWar{ background:#3a2c1c; color: var(--gold); }
+  .ws-warEnded{ background:#2a3038; color: var(--text-dim); }
+  .ws-preparation{ background:#26323a; color:#7fb3c9; }
+  .ws-none{ background:#2a3038; color: var(--text-faint); }
+
+  .result-win{ color: var(--green); font-weight:600; }
+  .result-lose{ color: var(--red); font-weight:600; }
+  .result-tie{ color: var(--text-dim); font-weight:600; }
