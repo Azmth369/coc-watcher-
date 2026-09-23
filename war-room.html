@@ -405,12 +405,8 @@
      round Ask button. Cancel is wider, so give the button its own auto-sized
      column instead of letting it overflow the panel. */
   #dashboard[data-view="home"] .chat-input-area{
-    grid-template-columns:minmax(0,1fr) auto auto !important;
+    grid-template-columns:minmax(0,1fr) auto !important;
     min-width:0;
-  }
-  #dashboard[data-view="home"] .chat-emoji-btn{
-    width:34px;
-    flex-basis:34px;
   }
   #dashboard[data-view="home"] #chatSend.chat-cancel-btn{
     width:auto !important;
@@ -464,7 +460,7 @@
   .nav-list{ flex:1; overflow-y:auto; padding: 10px 8px; display:flex; flex-direction:column; gap:2px; }
   .nav-item{ display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:8px; cursor:pointer; color:var(--text-dim); font-size:13px; background:none; border:none; text-align:left; width:100%; font-family:'Inter',sans-serif; }
   .nav-item:hover{ background:#262c36; color: var(--text); }
-  .nav-item .nav-icon{ font-size:14.5px; width:18px; text-align:center; flex-shrink:0; }
+  .nav-item .nav-icon{ font-size:16px; width:20px; text-align:center; flex-shrink:0; line-height:1; display:inline-flex; align-items:center; justify-content:center; }
   .nav-divider{ height:1px; background: var(--panel-border); margin:8px 6px; }
   .nav-item.nav-notes{ color: var(--gold-dim); }
   .nav-item.nav-notes:hover{ color: var(--gold); background:#2e2413; }
@@ -832,7 +828,7 @@
     border-top:0;
     padding:2px 14px 10px;
     display:grid;
-    grid-template-columns:minmax(0,1fr) 38px;
+    grid-template-columns:minmax(0,1fr) auto;
     gap:8px;
     align-items:end;
   }
@@ -847,61 +843,6 @@
     line-height:1.45;
   }
   .chat-input-area textarea::placeholder{ color:var(--text-faint); }
-  .chat-emoji-btn{
-    width:34px;
-    height:34px;
-    flex:0 0 34px;
-    align-self:end;
-    border:1px solid var(--panel-border);
-    border-radius:50%;
-    background:var(--bg);
-    color:var(--text-dim);
-    cursor:pointer;
-    display:grid;
-    place-items:center;
-    font-size:18px;
-    line-height:1;
-    transition:transform .12s ease, border-color .12s ease, background .12s ease;
-  }
-  .chat-emoji-btn:hover,
-  .chat-emoji-btn.active{
-    border-color:var(--gold-dim);
-    background:rgba(201,162,39,.10);
-    color:var(--gold);
-    transform:translateY(-1px);
-  }
-  .chat-input-area{ position:relative; }
-  .chat-emoji-picker{
-    position:absolute;
-    right:56px;
-    bottom:52px;
-    z-index:80;
-    width:226px;
-    display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:4px;
-    padding:8px;
-    border:1px solid var(--panel-border);
-    border-radius:12px;
-    background:var(--bg-raised);
-    box-shadow:0 14px 35px rgba(0,0,0,.24);
-  }
-  .chat-emoji-picker[hidden]{ display:none !important; }
-  .chat-emoji-picker button{
-    width:30px;
-    height:30px;
-    padding:0;
-    border:0;
-    border-radius:7px;
-    background:transparent;
-    color:var(--text);
-    cursor:pointer;
-    font-size:17px;
-  }
-  .chat-emoji-picker button:hover{
-    background:rgba(201,162,39,.12);
-    transform:scale(1.08);
-  }
   .chat-input-hint{
     font-size:10px;
     color:var(--text-faint);
@@ -1427,17 +1368,17 @@
       <button class="btn-expand" id="closeNavBtn" title="Close">×</button>
     </div>
     <div class="nav-list">
-      <button class="nav-item nav-active" data-view="home"><span class="nav-icon">⌂</span>Home</button>
-      <button class="nav-item nav-ai" data-view="chat"><span class="nav-icon">▢</span>AI Chat</button>
-      <button class="nav-item" data-view="members"><span class="nav-icon">♙</span>Members</button>
-      <button class="nav-item" data-view="war"><span class="nav-icon">⚔</span>Ongoing War</button>
-      <button class="nav-item" data-view="info"><span class="nav-icon">ⓘ</span>Clan Info</button>
-      <button class="nav-item" data-view="capital"><span class="nav-icon">⌂</span>Capital Raid</button>
-      <button class="nav-item" data-view="attack-log"><span class="nav-icon">▥</span>Attack Log</button>
-      <button class="nav-item" data-view="history"><span class="nav-icon">◷</span>History</button>
+      <button class="nav-item nav-active" data-view="home"><span class="nav-icon" aria-hidden="true">🏠</span>Home</button>
+      <button class="nav-item nav-ai" data-view="chat"><span class="nav-icon" aria-hidden="true">💬</span>AI Chat</button>
+      <button class="nav-item" data-view="members"><span class="nav-icon" aria-hidden="true">👥</span>Members</button>
+      <button class="nav-item" data-view="war"><span class="nav-icon" aria-hidden="true">⚔️</span>Ongoing War</button>
+      <button class="nav-item" data-view="info"><span class="nav-icon" aria-hidden="true">🏰</span>Clan Info</button>
+      <button class="nav-item" data-view="capital"><span class="nav-icon" aria-hidden="true">🏛️</span>Capital Raid</button>
+      <button class="nav-item" data-view="attack-log"><span class="nav-icon" aria-hidden="true">📊</span>Attack Log</button>
+      <button class="nav-item" data-view="history"><span class="nav-icon" aria-hidden="true">📜</span>History</button>
       <div class="nav-divider"></div>
-      <button class="nav-item nav-notes" data-view="notes"><span class="nav-icon">▤</span>Notes</button>
-      <button class="nav-item" data-view="settings"><span class="nav-icon">⚙</span>Settings</button>
+      <button class="nav-item nav-notes" data-view="notes"><span class="nav-icon" aria-hidden="true">📝</span>Notes</button>
+      <button class="nav-item" data-view="settings"><span class="nav-icon" aria-hidden="true">⚙️</span>Settings</button>
     </div>
   </div>
 
@@ -1573,22 +1514,6 @@
             <div class="suggestion-chips" id="chips"></div>
             <div class="chat-input-area">
               <textarea id="chatInput" placeholder="Ask a question about your clan..." aria-label="Ask a question about your clan"></textarea>
-              <button class="chat-emoji-btn" id="chatEmojiBtn" type="button" title="Add emoji" aria-label="Add emoji">☺</button>
-              <button class="btn" id="chatSend">Ask</button>
-              <div class="chat-emoji-picker" id="chatEmojiPicker" hidden aria-label="Emoji picker">
-                <button type="button" data-emoji="⚔️" title="War">⚔️</button>
-                <button type="button" data-emoji="🏆" title="Trophy">🏆</button>
-                <button type="button" data-emoji="🔥" title="Fire">🔥</button>
-                <button type="button" data-emoji="💯" title="100">💯</button>
-                <button type="button" data-emoji="👀" title="Eyes">👀</button>
-                <button type="button" data-emoji="😎" title="Cool">😎</button>
-                <button type="button" data-emoji="😂" title="Laugh">😂</button>
-                <button type="button" data-emoji="❤️" title="Heart">❤️</button>
-                <button type="button" data-emoji="👍" title="Thumbs up">👍</button>
-                <button type="button" data-emoji="🎯" title="Target">🎯</button>
-                <button type="button" data-emoji="💪" title="Strong">💪</button>
-                <button type="button" data-emoji="🤔" title="Thinking">🤔</button>
-              </div>
             </div>
           </div>
         </div>
@@ -4382,34 +4307,6 @@ function resizeChatInput(){
 }
 $('#chatInput').addEventListener('input', resizeChatInput);
 
-const chatEmojiBtn = $('#chatEmojiBtn');
-const chatEmojiPicker = $('#chatEmojiPicker');
-function setEmojiPicker(open){
-  if(!chatEmojiPicker || !chatEmojiBtn) return;
-  chatEmojiPicker.hidden = !open;
-  chatEmojiBtn.classList.toggle('active', open);
-}
-chatEmojiBtn?.addEventListener('click', e => {
-  e.stopPropagation();
-  setEmojiPicker(chatEmojiPicker.hidden);
-});
-chatEmojiPicker?.addEventListener('click', e => {
-  const btn = e.target.closest('[data-emoji]');
-  if(!btn) return;
-  const input = $('#chatInput');
-  const emoji = btn.dataset.emoji || '';
-  const start = input.selectionStart ?? input.value.length;
-  const end = input.selectionEnd ?? input.value.length;
-  input.value = input.value.slice(0,start) + emoji + input.value.slice(end);
-  input.selectionStart = input.selectionEnd = start + emoji.length;
-  resizeChatInput();
-  input.focus();
-});
-document.addEventListener('click', e => {
-  if(chatEmojiPicker && !chatEmojiPicker.hidden && !chatEmojiPicker.contains(e.target) && e.target !== chatEmojiBtn){
-    setEmojiPicker(false);
-  }
-});
 resizeChatInput();
 
 $('#newChatBtn').addEventListener('click', startNewChat);
@@ -4479,7 +4376,6 @@ async function sendChat(){
 
   if(activeChatAbortController) return;
   hideLimitToast();
-  setEmojiPicker(false);
   chatRequestCancelled = false;
   activeChatAbortController = new AbortController();
   const requestSignal = activeChatAbortController.signal;
