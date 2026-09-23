@@ -736,14 +736,21 @@
   #chatSend.chat-cancel-btn{ background:var(--red); color:#fff; font-size:12px; width:auto; min-width:70px; border-radius:8px; }
   #chatSend.chat-cancel-btn::after{ content:none; }
   .chat-cancel-btn:hover{ background:var(--red) !important; }
-  .suggestion-chips{
+  /* Home recommendations stay pinned directly under the chat header,
+     regardless of the selected AI panel height. */
+  #dashboard[data-view="home"] .suggestion-chips{
     display:flex;
+    flex:0 0 auto;
     flex-wrap:wrap;
     justify-content:center;
+    align-content:flex-start;
+    align-items:flex-start;
     gap:8px;
-    padding:0;
-    margin:10px auto 0;
-    max-width:820px;
+    padding:8px 14px 10px;
+    margin:0;
+    max-width:none;
+    width:100%;
+    box-sizing:border-box;
   }
   .chip{
     padding:8px 14px;
