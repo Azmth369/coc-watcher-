@@ -695,7 +695,19 @@
   }
   .btn-expand:hover{ background:var(--bg); }
   .chat-head-btns .btn-expand{ border:0; }
-  .chat-messages{ display:none; }
+  /* Home chat is a real working composer, not just a visual placeholder.
+     Keep the message area visible so answers render here without needing
+     Expand or the dedicated AI Chat view. */
+  #dashboard[data-view="home"] .chat-messages{
+    display:flex;
+    flex:1 1 auto;
+    min-height:0;
+    overflow-y:auto;
+    padding:8px 14px;
+  }
+  #dashboard[data-view="home"] .msg{
+    max-width:92%;
+  }
   .limit-toast{ display:none; }
   .chat-input-area{
     border-top:0;
@@ -756,6 +768,9 @@
     box-sizing:border-box;
   }
   #dashboard[data-view="home"] .suggestion-chips[hidden]{
+    display:none !important;
+  }
+  #homeSizeControls[hidden]{
     display:none !important;
   }
   #dashboard[data-view="home"] .suggestion-chips:not([hidden]) + .chat-input-area{
