@@ -783,194 +783,6 @@
     .home-hero-copy h1{ font-size:23px; }
   }
 
-
-/* ============================================================
-   Dashboard navigation + non-overlapping home layout
-   Home shows only: clan overview -> AI composer -> Members ->
-   Ongoing War/CWL -> Capital Raid. Other sections are dedicated
-   dashboards opened from the sidebar.
-   ============================================================ */
-#dashboard{ position:relative; }
-#dashboard .split-area{ display:block; }
-#dashboard .col-main{ width:100%; }
-#dashboard .col-chat{
-  position:static;
-  transform:none;
-  width:min(680px,100%);
-  max-width:680px;
-  margin:20px auto 28px;
-  padding:0;
-}
-#dashboard .col-chat .chat-panel{ width:100%; }
-#dashboard[data-view="home"] #secInfo,
-#dashboard[data-view="home"] #secAttackLog,
-#dashboard[data-view="home"] #secHistory,
-#dashboard[data-view="home"] #secNotes,
-#dashboard[data-view="home"] #secSettings{ display:none; }
-
-#dashboard[data-view="home"] #colChat{
-  display:block;
-}
-#dashboard:not([data-view="home"]) #colChat{
-  display:none;
-}
-#dashboard[data-view="chat"] #colMain{
-  display:none;
-}
-#dashboard[data-view="chat"] #colChat{
-  display:block;
-  width:min(960px,100%);
-  max-width:960px;
-  margin:10px auto 30px;
-}
-#dashboard[data-view="chat"] .chat-panel{
-  min-height:calc(100vh - 220px);
-  height:auto;
-  display:flex;
-  flex-direction:column;
-}
-#dashboard[data-view="chat"] .chat-sidebar{
-  display:flex;
-}
-#dashboard[data-view="chat"] .chat-head{
-  padding:16px 18px;
-  border-bottom:1px solid var(--panel-border);
-}
-#dashboard[data-view="chat"] .chat-head-row > div:first-child{
-  display:block;
-}
-#dashboard[data-view="chat"] .chat-head-btns{ width:auto; }
-#dashboard[data-view="chat"] .chat-messages{
-  display:flex;
-  flex:1;
-  min-height:360px;
-}
-#dashboard[data-view="chat"] .suggestion-chips{
-  display:flex;
-  padding:0 14px 10px;
-  margin:0;
-  max-width:none;
-  justify-content:flex-start;
-}
-#dashboard[data-view="chat"] .chat-input-area{
-  border-top:1px solid var(--panel-border);
-  padding:12px 14px;
-  display:flex;
-}
-#dashboard[data-view="chat"] .chat-input-area textarea{
-  height:42px;
-  border:1px solid var(--panel-border);
-  border-radius:8px;
-  padding:10px 12px;
-}
-#dashboard[data-view="chat"] #chatSend{
-  width:auto;
-  height:auto;
-  border-radius:8px;
-  padding:11px 20px;
-  font-size:13.5px;
-  display:block;
-}
-#dashboard[data-view="chat"] #chatSend::after{ content:none; }
-
-#dashboard[data-view="section"] #secHome,
-#dashboard[data-view="section"] #secSummary,
-#dashboard[data-view="section"] #secWar,
-#dashboard[data-view="section"] #secInfo,
-#dashboard[data-view="section"] #secCapital,
-#dashboard[data-view="section"] #secAttackLog,
-#dashboard[data-view="section"] #secHistory,
-#dashboard[data-view="section"] #secNotes,
-#dashboard[data-view="section"] #secSettings{ display:none; }
-
-#dashboard[data-view="members"] #secSummary,
-#dashboard[data-view="war"] #secWar,
-#dashboard[data-view="info"] #secInfo,
-#dashboard[data-view="capital"] #secCapital,
-#dashboard[data-view="attackLog"] #secAttackLog,
-#dashboard[data-view="history"] #secHistory,
-#dashboard[data-view="notes"] #secNotes,
-#dashboard[data-view="settings"] #secSettings{ display:block; }
-
-#dashboard[data-view="members"] #colMain,
-#dashboard[data-view="war"] #colMain,
-#dashboard[data-view="info"] #colMain,
-#dashboard[data-view="capital"] #colMain,
-#dashboard[data-view="attackLog"] #colMain,
-#dashboard[data-view="history"] #colMain,
-#dashboard[data-view="notes"] #colMain,
-#dashboard[data-view="settings"] #colMain{
-  max-width:960px;
-  margin:0 auto;
-}
-#dashboard[data-view="members"] #secSummary,
-#dashboard[data-view="war"] #secWar,
-#dashboard[data-view="info"] #secInfo,
-#dashboard[data-view="capital"] #secCapital,
-#dashboard[data-view="attackLog"] #secAttackLog,
-#dashboard[data-view="history"] #secHistory,
-#dashboard[data-view="notes"] #secNotes,
-#dashboard[data-view="settings"] #secSettings{
-  margin:0 0 18px;
-  scroll-margin-top:20px;
-}
-
-.dashboard-heading{
-  max-width:960px;
-  margin:22px auto 22px;
-  text-align:left;
-}
-.dashboard-heading h1{
-  margin:0;
-  font-size:25px;
-  font-weight:600;
-  letter-spacing:-.03em;
-}
-.dashboard-heading p{
-  margin:7px 0 0;
-  color:var(--text-faint);
-  font-size:13.5px;
-}
-#dashboard:not([data-view="home"]) .home-hero-copy{
-  text-align:left;
-}
-#dashboard[data-view="home"] .home-hero-copy{
-  margin-bottom:22px;
-}
-#dashboard[data-view="home"] #secSummary,
-#dashboard[data-view="home"] #secWar,
-#dashboard[data-view="home"] #secCapital{
-  max-width:960px;
-  margin-left:auto;
-  margin-right:auto;
-}
-#dashboard[data-view="home"] #secSummary{ margin-top:18px; }
-
-.nav-item.nav-active{
-  background:var(--bg);
-  color:var(--text);
-  font-weight:600;
-}
-.nav-item.nav-active .nav-icon{ opacity:1; color:var(--gold); }
-
-@media (max-width:900px){
-  #dashboard[data-view="chat"] .chat-panel{ min-height:calc(100vh - 180px); }
-  #dashboard[data-view="chat"] #colChat{ width:100%; }
-  .dashboard-heading{ margin:16px auto 18px; }
-}
-
-
-/* Hard override for the home composer: it participates in normal document flow. */
-#dashboard[data-view="home"] .col-chat{
-  position:static !important;
-  top:auto !important;
-  left:auto !important;
-  transform:none !important;
-  width:min(680px,100%) !important;
-  max-width:680px !important;
-  margin:20px auto 28px !important;
-}
-
 </style>
 </head>
 <body>
@@ -983,17 +795,16 @@
       <button class="btn-expand" id="closeNavBtn" title="Close">×</button>
     </div>
     <div class="nav-list">
-      <button class="nav-item" data-target="secHome" data-view="home"><span class="nav-icon">⌂</span>Home</button>
-      <button class="nav-item nav-ai" data-mode="chat" data-view="chat"><span class="nav-icon">▢</span>AI Chat</button>
-      <button class="nav-item" data-target="secSummary" data-view="members"><span class="nav-icon">♙</span>Members</button>
-      <button class="nav-item" data-target="secWar" data-view="war"><span class="nav-icon">⚔</span>Ongoing War</button>
-      <button class="nav-item" data-target="secCapital" data-view="capital"><span class="nav-icon">⌂</span>Capital Raid</button>
-      <button class="nav-item" data-target="secInfo" data-view="info"><span class="nav-icon">⌂</span>Clan Info</button>
-      <button class="nav-item" data-target="secAttackLog" data-view="attackLog"><span class="nav-icon">▥</span>Attack Log</button>
-      <button class="nav-item" data-target="secHistory" data-view="history"><span class="nav-icon">◷</span>History</button>
+      <button class="nav-item" data-target="secHome"><span class="nav-icon">⌂</span>Home</button>
+      <button class="nav-item nav-ai" data-mode="chat"><span class="nav-icon">▢</span>AI Chat</button>
+      <button class="nav-item" data-target="secSummary"><span class="nav-icon">♙</span>Members</button>
+      <button class="nav-item" data-target="secWar"><span class="nav-icon">⚔</span>Ongoing War</button>
+      <button class="nav-item" data-target="secCapital"><span class="nav-icon">⌂</span>Capital Raid</button>
+      <button class="nav-item" data-target="secAttackLog"><span class="nav-icon">▥</span>Attack Log</button>
+      <button class="nav-item" data-target="secHistory"><span class="nav-icon">◷</span>History</button>
       <div class="nav-divider"></div>
-      <button class="nav-item nav-notes" data-target="secNotes" data-view="notes"><span class="nav-icon">▤</span>Notes</button>
-      <button class="nav-item" data-target="secSettings" data-view="settings"><span class="nav-icon">⚙</span>Settings</button>
+      <button class="nav-item nav-notes" data-target="secNotes"><span class="nav-icon">▤</span>Notes</button>
+      <button class="nav-item" data-target="secSettings"><span class="nav-icon">⚙</span>Settings</button>
     </div>
   </div>
 
@@ -1028,7 +839,7 @@
       <button class="btn btn-ghost" id="refreshBtn">Refresh data</button>
     </div>
 
-    <div class="home-hero-copy dashboard-heading" id="dashboardHeading">
+    <div class="home-hero-copy">
       <h1>What would you like to know?</h1>
       <p>Live clan intel, backed by an AI you can ask anything</p>
     </div>
@@ -1511,9 +1322,7 @@ document.addEventListener('drop', (e) => {
 document.documentElement.setAttribute('data-theme', localStorage.getItem('warroom_theme') || 'light');
 document.body.setAttribute('data-density', localStorage.getItem('warroom_density') || 'normal');
 document.body.classList.toggle('chat-position-top', (localStorage.getItem('warroom_chat_position') || 'bottom') === 'top');
-const chatPanelEl = document.querySelector('.chat-panel');
 applySectionOrder();
-setDashboardView('home');
 
 // --- AI provider switch (Sarvam / Gemini) — persisted like the other local prefs ---
 let aiProvider = localStorage.getItem('warroom_ai_provider') || 'sarvam';
@@ -1568,7 +1377,9 @@ window.addEventListener('DOMContentLoaded', () => {
   if($('#clanTag').value.trim()) connect();
 });
 
-// --- Main nav sidebar + dedicated dashboard views ---
+// --- Main nav sidebar: slide-out drawer opened via the hamburger button,
+// same pattern as this app's own chat-history drawer. Each item scrolls the
+// single continuously-scrollable content column to its section, then closes.
 function openNavSidebar(){
   $('#navSidebar').classList.add('open');
   $('#navBackdrop').classList.add('visible');
@@ -1577,71 +1388,23 @@ function closeNavSidebar(){
   $('#navSidebar').classList.remove('open');
   $('#navBackdrop').classList.remove('visible');
 }
-
-const VIEW_META = {
-  home: { title: 'What would you like to know?', subtitle: 'Live clan intel, backed by an AI you can ask anything' },
-  chat: { title: 'AI Chat', subtitle: 'Ask anything about your clan — answers are grounded in your loaded clan data.' },
-  members: { title: 'Members', subtitle: 'Review your roster, roles, Town Hall levels, trophies and donations.' },
-  war: { title: 'Ongoing War', subtitle: 'Current war, CWL rounds and live battle information.' },
-  info: { title: 'Clan Info', subtitle: 'Review the clan war history and archived war information.' },
-  capital: { title: 'Capital Raid', subtitle: 'Current raid weekend activity and archived capital raid seasons.' },
-  attackLog: { title: 'Attack Log', subtitle: 'Inspect the live and archived attack activity for your clan.' },
-  history: { title: 'History', subtitle: 'Full archived war, capital raid and CWL history.' },
-  notes: { title: 'Notes', subtitle: 'Your clan notebook and saved notes.' },
-  settings: { title: 'Settings', subtitle: 'Configure appearance, polling, chat and dashboard preferences.' }
-};
-
-function setDashboardView(view){
-  if(!VIEW_META[view]) view='home';
-  const dashboard=$('#dashboard');
-  if(!dashboard) return;
-
-  dashboard.dataset.view=view;
-
-  const heading=$('#dashboardHeading');
-  const meta=VIEW_META[view];
-  if(heading){
-    heading.querySelector('h1').textContent=meta.title;
-    heading.querySelector('p').textContent=meta.subtitle;
-    heading.classList.toggle('home-heading', view==='home');
-  }
-
-  document.querySelectorAll('.nav-item').forEach(item=>{
-    item.classList.toggle('nav-active', item.dataset.view===view);
-  });
-
-  const colMain=$('#colMain');
-  const colChat=$('#colChat');
-  const splitArea=document.querySelector('.split-area');
-
-  if(view==='home'){
-    if(colMain && colChat && colChat.parentElement!==colMain){
-      const homeSection=$('#secHome');
-      if(homeSection) colMain.insertBefore(colChat, $('#secSummary'));
-    }
-    setChatExpanded(false);
-  }else{
-    if(colChat && splitArea && colChat.parentElement!==splitArea){
-      splitArea.appendChild(colChat);
-    }
-    setChatExpanded(false);
-  }
-
-  // Home and every dedicated dashboard start at the top of the workspace.
-  const dashboardScroll=$('#dashboard');
-  if(dashboardScroll) dashboardScroll.scrollTo({top:0,behavior:'instant'});
-}
-
 $('#navMenuBtn').addEventListener('click', () => {
   $('#navSidebar').classList.contains('open') ? closeNavSidebar() : openNavSidebar();
 });
 $('#navBackdrop').addEventListener('click', closeNavSidebar);
 $('#closeNavBtn').addEventListener('click', closeNavSidebar);
-
-document.querySelectorAll('.nav-item').forEach(item=>{
-  item.addEventListener('click', ()=>{
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
     closeNavSidebar();
-    setDashboardView(item.dataset.view || 'home');
+    if(item.dataset.mode === 'chat'){
+      // AI Chat gets its own dedicated full-screen view, not just a scroll
+      // to wherever the chat panel happens to sit on Home — this reuses the
+      // same expand/collapse mechanism as the ⤢ button in the chat header.
+      setChatExpanded(true);
+      return;
+    }
+    const target = document.getElementById(item.dataset.target);
+    if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
@@ -3696,6 +3459,7 @@ $('#newChatBtn').addEventListener('click', startNewChat);
 $('#historyBtn').addEventListener('click', (e) => { e.stopPropagation(); toggleChatSidebar(); });
 $('#closeSidebarBtn').addEventListener('click', closeChatSidebar);
 
+const chatPanelEl = document.querySelector('.chat-panel');
 $('#expandChat').addEventListener('click', () => setChatExpanded(!chatPanelEl.classList.contains('expanded')));
 $('#chatBackdrop').addEventListener('click', () => setChatExpanded(false));
 
