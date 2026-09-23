@@ -977,7 +977,10 @@
     width:100%;
     max-width:960px;
     margin:0 auto;
-    padding-bottom:230px;
+    /* Reserve exactly the space used by the absolute Home AI panel.
+       Increasing AI height therefore pushes the tables down instead of
+       letting the chat overlap them. */
+    padding-bottom:calc(var(--home-chat-height) + 54px);
   }
   #dashboard[data-view="home"] .col-chat{
     position:absolute;
