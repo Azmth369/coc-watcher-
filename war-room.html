@@ -2670,6 +2670,7 @@ function setMemberSort(key){
     memberSort = { key, dir: key === 'name' ? 'asc' : 'desc' };
     if(key === 'rank') memberSort.dir = 'asc';
   }
+  state.memberPage = 0;
   renderMembers();
 }
 
