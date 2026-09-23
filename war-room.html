@@ -235,7 +235,7 @@
   /* Chat */
   .chat-panel{ flex:1; display:flex; flex-direction:row; padding: 0; overflow:hidden; position:relative; min-width:0; }
   .chat-panel.expanded{
-    position: fixed; inset: 20px; z-index: 500; box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+    position: fixed; inset: 20px; z-index: 1101; box-shadow: 0 20px 60px rgba(0,0,0,0.55);
   }
   @media (max-width: 700px){
     .chat-panel.expanded{ inset: 8px; }
@@ -244,7 +244,7 @@
   .chat-main{ flex:1; min-width:0; display:flex; flex-direction:column; }
   .chat-panel.expanded .chat-messages{ padding: 22px clamp(16px, 12%, 160px); }
   .chat-backdrop{ display:none; position: fixed; inset:0; background: rgba(8,10,14,0.6); z-index: 400; }
-  .chat-backdrop.visible{ display:block; }
+  .chat-backdrop.visible{ display:block; z-index:1100; }
 
   .chat-head{ padding: 16px 18px; border-bottom: 1px solid var(--panel-border); position: relative; flex-shrink:0; }
   .chat-head-row{ display:flex; align-items:flex-start; justify-content:space-between; gap: 10px; }
@@ -426,7 +426,7 @@
     }
   }
 
-  .chat-backdrop.visible{ z-index:1000; }
+  .chat-backdrop.visible{ z-index:1100; }
   @media (max-width:700px){
     .chat-panel.expanded{
       top:8px !important;
@@ -1532,7 +1532,7 @@ let chatRequestCancelled = false;
 let memberSort = { key: 'rank', dir: 'asc' };
 let thLoading = false;
 let homeSizeControlsHidden = false;
-let chatHostPlaceholder = null;
+let chatPanelPlaceholder = null;
 
 const $ = sel => document.querySelector(sel);
 const HOME_TABLE_SIZES = [0.85, 1, 1.15, 1.3];
@@ -4324,38 +4324,24 @@ $('#expandChat').addEventListener('click', () => setChatExpanded(!chatPanelEl.cl
 $('#chatBackdrop').addEventListener('click', () => setChatExpanded(false));
 
 function setChatExpanded(on){
-  const chatHost = document.querySelector('.col-chat');
-  if(!chatHost) return;
-
   if(on){
-    if(!chatHostPlaceholder && chatHost.parentNode){
-      chatHostPlaceholder = document.createComment('chat-host-placeholder');
-      chatHost.parentNode.insertBefore(chatHostPlaceholder, chatHost);
+    if(!chatPanelPlaceholder && chatPanelEl.parentNode){
+      chatPanelPlaceholder = document.createComment('chat-panel-placeholder');
+      chatPanelEl.parentNode.insertBefore(chatPanelPlaceholder, chatPanelEl);
     }
-    // Move the host directly under <body>. This deliberately avoids every
-    // Home/dashboard containing-block, transform, overflow and grid rule.
-    document.body.appendChild(chatHost);
-    chatHost.classList.add('chat-host-expanded');
-    chatHost.style.display = 'block';
-    chatHost.style.width = '100%';
-    chatHost.style.height = '0';
-    chatHost.style.padding = '0';
-    chatHost.style.margin = '0';
+    // Portal the actual panel to <body> while expanded. This keeps fixed
+    // positioning independent of Home/dashboard grids and transforms.
+    document.body.appendChild(chatPanelEl);
+    chatPanelEl.classList.add('expanded');
   }else{
-    if(chatHostPlaceholder && chatHostPlaceholder.parentNode){
-      chatHostPlaceholder.parentNode.insertBefore(chatHost, chatHostPlaceholder);
-      chatHostPlaceholder.remove();
+    if(chatPanelPlaceholder && chatPanelPlaceholder.parentNode){
+      chatPanelPlaceholder.parentNode.insertBefore(chatPanelEl, chatPanelPlaceholder);
+      chatPanelPlaceholder.remove();
     }
-    chatHostPlaceholder = null;
-    chatHost.classList.remove('chat-host-expanded');
-    chatHost.style.removeProperty('display');
-    chatHost.style.removeProperty('width');
-    chatHost.style.removeProperty('height');
-    chatHost.style.removeProperty('padding');
-    chatHost.style.removeProperty('margin');
+    chatPanelPlaceholder = null;
+    chatPanelEl.classList.remove('expanded');
   }
 
-  chatPanelEl.classList.toggle('expanded', on);
   $('#chatBackdrop').classList.toggle('visible', on);
   $('#expandChat').textContent = on ? '×' : '⤢';
   $('#expandChat').title = on ? 'Collapse chat' : 'Expand chat';
@@ -4364,7 +4350,6 @@ function setChatExpanded(on){
     setTimeout(() => $('#chatInput')?.focus(), 0);
   }
 }
-
 function showLimitToast(message){
   $('#limitToastText').textContent = message;
   $('#limitToast').hidden = false;
