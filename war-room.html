@@ -330,6 +330,62 @@
   .chip{ font-size: 11px; color: var(--text-dim); border: 1px solid var(--panel-border); padding: 5px 10px; border-radius: 20px; cursor:pointer; background: transparent; }
   .chip:hover{ border-color: var(--gold-dim); color: var(--text); }
 
+  /* Chat sizing safeguards: the composer must always fit inside its panel,
+     and expanded mode must be a true viewport-sized overlay rather than
+     inheriting the Home chat's custom width/height. */
+  .chat-input-area{ min-width:0; align-items:flex-end; }
+  .chat-input-area textarea{
+    flex:1 1 auto;
+    min-width:0;
+    width:auto;
+  }
+  .chat-input-area .btn{
+    flex:0 0 auto;
+    min-width:72px;
+    white-space:nowrap;
+  }
+  .chat-panel.expanded{
+    position:fixed !important;
+    top:20px !important;
+    right:20px !important;
+    bottom:20px !important;
+    left:20px !important;
+    width:auto !important;
+    height:auto !important;
+    max-width:none !important;
+    max-height:none !important;
+    min-width:0 !important;
+    min-height:0 !important;
+    margin:0 !important;
+    transform:none !important;
+    z-index:1001 !important;
+    box-sizing:border-box !important;
+  }
+  .chat-panel.expanded .chat-sidebar,
+  .chat-panel.expanded .chat-main{
+    min-height:0;
+    height:100%;
+  }
+  .chat-panel.expanded .chat-messages{
+    min-height:0;
+    overflow-y:auto;
+  }
+  .chat-backdrop.visible{ z-index:1000; }
+  @media (max-width:700px){
+    .chat-panel.expanded{
+      top:8px !important;
+      right:8px !important;
+      bottom:8px !important;
+      left:8px !important;
+    }
+    .chat-panel.expanded .chat-input-area{
+      padding:10px;
+    }
+    .chat-panel.expanded .chat-input-area .btn{
+      min-width:68px;
+    }
+  }
+
   .refresh-row{ display:flex; justify-content:flex-end; align-items:center; margin: -6px 0 16px; gap:8px; }
 
   /* Hamburger + slide-out main nav sidebar, overlaying the whole app like a chat app's own sidebar */
