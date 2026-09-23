@@ -783,6 +783,122 @@
     .home-hero-copy h1{ font-size:23px; }
   }
 
+
+  /* ============================================================
+     Dedicated dashboard views
+     Navigation changes visibility/layout only. Existing render,
+     API, polling, chat, and panel logic stay untouched.
+     ============================================================ */
+  #dashboard[data-view] .home-hero-copy{ display:none; }
+  #dashboard[data-view="home"] .home-hero-copy{ display:block; }
+
+  #dashboard[data-view="home"] .split-area{
+    display:grid;
+    grid-template-columns:minmax(0,960px);
+    justify-content:center;
+    align-items:start;
+    width:100%;
+    min-height:0;
+  }
+  #dashboard[data-view="home"] .col-main{ display:contents; }
+  #dashboard[data-view="home"] #secHome{
+    grid-column:1; grid-row:1; width:100%; max-width:960px;
+    margin:0 auto 16px; padding-bottom:0;
+  }
+  #dashboard[data-view="home"] .col-chat{
+    grid-column:1; grid-row:2;
+    position:static; top:auto; left:auto; transform:none;
+    width:min(680px,100%); max-width:680px; min-width:0;
+    height:auto; margin:0 auto 24px; padding:0; display:block; z-index:auto;
+  }
+  #dashboard[data-view="home"] #secSummary{
+    grid-column:1; grid-row:3; width:100%; max-width:960px; margin:0 auto 16px;
+  }
+  #dashboard[data-view="home"] #secWar{
+    grid-column:1; grid-row:4; width:100%; max-width:960px; margin:0 auto 16px;
+  }
+  #dashboard[data-view="home"] #secCapital{
+    grid-column:1; grid-row:5; width:100%; max-width:960px; margin:0 auto 16px;
+  }
+  #dashboard[data-view="home"] #secInfo,
+  #dashboard[data-view="home"] #secAttackLog,
+  #dashboard[data-view="home"] #secHistory,
+  #dashboard[data-view="home"] #secNotes,
+  #dashboard[data-view="home"] #secSettings{ display:none !important; }
+
+  #dashboard[data-view="members"] #colMain > section:not(#secSummary),
+  #dashboard[data-view="war"] #colMain > section:not(#secWar),
+  #dashboard[data-view="info"] #colMain > section:not(#secInfo),
+  #dashboard[data-view="capital"] #colMain > section:not(#secCapital),
+  #dashboard[data-view="attack-log"] #colMain > section:not(#secAttackLog),
+  #dashboard[data-view="history"] #colMain > section:not(#secHistory),
+  #dashboard[data-view="notes"] #colMain > section:not(#secNotes),
+  #dashboard[data-view="settings"] #colMain > section:not(#secSettings){ display:none !important; }
+
+  #dashboard[data-view="members"] #secSummary,
+  #dashboard[data-view="war"] #secWar,
+  #dashboard[data-view="info"] #secInfo,
+  #dashboard[data-view="capital"] #secCapital,
+  #dashboard[data-view="attack-log"] #secAttackLog,
+  #dashboard[data-view="history"] #secHistory,
+  #dashboard[data-view="notes"] #secNotes,
+  #dashboard[data-view="settings"] #secSettings{
+    width:100%; max-width:960px; margin:0 auto;
+  }
+
+  #dashboard[data-view="chat"] .home-hero-copy{ display:none; }
+  #dashboard[data-view="chat"] .split-area{ display:block; width:100%; }
+  #dashboard[data-view="chat"] #colMain{ display:none; }
+  #dashboard[data-view="chat"] .col-chat{
+    position:static; top:auto; left:auto; transform:none;
+    width:min(960px,100%); max-width:960px; min-width:0;
+    height:auto; min-height:calc(100vh - 190px); margin:0 auto; padding:0; display:block;
+  }
+  #dashboard[data-view="chat"] .chat-panel{
+    width:100%; height:calc(100vh - 190px); min-height:560px;
+    display:flex; flex-direction:row; position:relative; overflow:hidden;
+  }
+  #dashboard[data-view="chat"] .chat-sidebar{ display:flex; }
+  #dashboard[data-view="chat"] .chat-head{ padding:16px 18px; border-bottom:1px solid var(--panel-border); }
+  #dashboard[data-view="chat"] .chat-head-row > div:first-child{ display:block; }
+  #dashboard[data-view="chat"] .chat-head-btns{ width:auto; }
+  #dashboard[data-view="chat"] .chat-messages{ display:flex; }
+  #dashboard[data-view="chat"] .limit-toast{ display:flex; }
+  #dashboard[data-view="chat"] .suggestion-chips{
+    display:flex; padding:0 14px 10px; margin:0; max-width:none; justify-content:flex-start;
+  }
+  #dashboard[data-view="chat"] .chat-input-area{
+    border-top:1px solid var(--panel-border); padding:12px 14px; display:flex;
+  }
+  #dashboard[data-view="chat"] .chat-input-area textarea{
+    height:42px; border:1px solid var(--panel-border); border-radius:8px; padding:10px 12px;
+  }
+  #dashboard[data-view="chat"] #chatSend{
+    width:auto; height:auto; border-radius:8px; padding:11px 20px;
+    font-size:13.5px; display:block;
+  }
+  #dashboard[data-view="chat"] #chatSend::after{ content:none; }
+
+  #dashboard[data-view="members"] .col-chat,
+  #dashboard[data-view="war"] .col-chat,
+  #dashboard[data-view="info"] .col-chat,
+  #dashboard[data-view="capital"] .col-chat,
+  #dashboard[data-view="attack-log"] .col-chat,
+  #dashboard[data-view="history"] .col-chat,
+  #dashboard[data-view="notes"] .col-chat,
+  #dashboard[data-view="settings"] .col-chat{ display:none; }
+
+  @media (max-width:900px){
+    #dashboard[data-view="home"] .split-area{
+      display:grid; grid-template-columns:minmax(0,1fr); width:100%;
+    }
+    #dashboard[data-view="home"] .col-chat{ width:min(680px,100%); margin:0 auto 22px; }
+    #dashboard[data-view="chat"] .col-chat{ width:100%; min-height:0; margin:0; }
+    #dashboard[data-view="chat"] .chat-panel{
+      height:calc(100vh - 150px); min-height:520px; border-radius:16px;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -795,16 +911,17 @@
       <button class="btn-expand" id="closeNavBtn" title="Close">×</button>
     </div>
     <div class="nav-list">
-      <button class="nav-item" data-target="secHome"><span class="nav-icon">⌂</span>Home</button>
-      <button class="nav-item nav-ai" data-mode="chat"><span class="nav-icon">▢</span>AI Chat</button>
-      <button class="nav-item" data-target="secSummary"><span class="nav-icon">♙</span>Members</button>
-      <button class="nav-item" data-target="secWar"><span class="nav-icon">⚔</span>Ongoing War</button>
-      <button class="nav-item" data-target="secCapital"><span class="nav-icon">⌂</span>Capital Raid</button>
-      <button class="nav-item" data-target="secAttackLog"><span class="nav-icon">▥</span>Attack Log</button>
-      <button class="nav-item" data-target="secHistory"><span class="nav-icon">◷</span>History</button>
+      <button class="nav-item nav-active" data-view="home"><span class="nav-icon">⌂</span>Home</button>
+      <button class="nav-item nav-ai" data-view="chat"><span class="nav-icon">▢</span>AI Chat</button>
+      <button class="nav-item" data-view="members"><span class="nav-icon">♙</span>Members</button>
+      <button class="nav-item" data-view="war"><span class="nav-icon">⚔</span>Ongoing War</button>
+      <button class="nav-item" data-view="info"><span class="nav-icon">ⓘ</span>Clan Info</button>
+      <button class="nav-item" data-view="capital"><span class="nav-icon">⌂</span>Capital Raid</button>
+      <button class="nav-item" data-view="attack-log"><span class="nav-icon">▥</span>Attack Log</button>
+      <button class="nav-item" data-view="history"><span class="nav-icon">◷</span>History</button>
       <div class="nav-divider"></div>
-      <button class="nav-item nav-notes" data-target="secNotes"><span class="nav-icon">▤</span>Notes</button>
-      <button class="nav-item" data-target="secSettings"><span class="nav-icon">⚙</span>Settings</button>
+      <button class="nav-item nav-notes" data-view="notes"><span class="nav-icon">▤</span>Notes</button>
+      <button class="nav-item" data-view="settings"><span class="nav-icon">⚙</span>Settings</button>
     </div>
   </div>
 
@@ -833,7 +950,7 @@
     </div>
   </div>
 
-  <div id="dashboard" hidden>
+  <div id="dashboard" data-view="home" hidden>
     <div class="refresh-row">
       <button class="btn-ghost btn-small" id="collapseAllBtn">Collapse all panels</button>
       <button class="btn btn-ghost" id="refreshBtn">Refresh data</button>
@@ -1377,9 +1494,38 @@ window.addEventListener('DOMContentLoaded', () => {
   if($('#clanTag').value.trim()) connect();
 });
 
-// --- Main nav sidebar: slide-out drawer opened via the hamburger button,
-// same pattern as this app's own chat-history drawer. Each item scrolls the
-// single continuously-scrollable content column to its section, then closes.
+// --- Main navigation ---
+// Sidebar items switch the dashboard view instead of scrolling the Home page.
+// This changes only visibility/layout; existing data, API, polling, and chat
+// state stay in the same DOM nodes.
+const DASHBOARD_VIEWS = new Set(['home','chat','members','war','info','capital','attack-log','history','notes','settings']);
+
+function setDashboardView(view){
+  if(!DASHBOARD_VIEWS.has(view)) view = 'home';
+  const dashboard = $('#dashboard');
+  if(!dashboard) return;
+
+  dashboard.dataset.view = view;
+
+  document.querySelectorAll('.nav-item[data-view]').forEach(item => {
+    item.classList.toggle('nav-active', item.dataset.view === view);
+  });
+
+  const chatPanel = document.querySelector('.chat-panel');
+  if(chatPanel && view !== 'chat'){
+    chatPanel.classList.remove('expanded');
+    const backdrop = $('#chatBackdrop');
+    if(backdrop) backdrop.classList.remove('visible');
+    const expandBtn = $('#expandChat');
+    if(expandBtn){
+      expandBtn.textContent = '⤢';
+      expandBtn.title = 'Expand chat';
+    }
+  }
+
+  dashboard.scrollTop = 0;
+}
+
 function openNavSidebar(){
   $('#navSidebar').classList.add('open');
   $('#navBackdrop').classList.add('visible');
@@ -1393,18 +1539,10 @@ $('#navMenuBtn').addEventListener('click', () => {
 });
 $('#navBackdrop').addEventListener('click', closeNavSidebar);
 $('#closeNavBtn').addEventListener('click', closeNavSidebar);
-document.querySelectorAll('.nav-item').forEach(item => {
+document.querySelectorAll('.nav-item[data-view]').forEach(item => {
   item.addEventListener('click', () => {
+    setDashboardView(item.dataset.view);
     closeNavSidebar();
-    if(item.dataset.mode === 'chat'){
-      // AI Chat gets its own dedicated full-screen view, not just a scroll
-      // to wherever the chat panel happens to sit on Home — this reuses the
-      // same expand/collapse mechanism as the ⤢ button in the chat header.
-      setChatExpanded(true);
-      return;
-    }
-    const target = document.getElementById(item.dataset.target);
-    if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
