@@ -984,8 +984,8 @@
     top:112px;
     left:50%;
     transform:translateX(-50%);
-    width:min(680px,calc(100% - 56px));
-    max-width:680px;
+    width:min(var(--home-chat-width),calc(100% - 40px));
+    max-width:var(--home-chat-width);
     min-width:0;
     height:auto;
     margin:0;
@@ -1005,6 +1005,108 @@
      controlled by JS, and the hidden attribute must always win over view CSS. */
   #limitToast[hidden],
   #chatSaveError[hidden]{ display:none !important; }
+
+  /* Home sizing controls. */
+  :root{
+    --home-table-scale:1;
+    --home-chat-width:680px;
+  }
+  .home-size-controls{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-right:auto;
+    flex-wrap:wrap;
+  }
+  .home-size-label{
+    color:var(--text-dim);
+    font-size:11.5px;
+    font-weight:600;
+    margin-right:2px;
+  }
+  .home-size-group{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    border:1px solid var(--panel-border);
+    border-radius:8px;
+    background:var(--panel);
+    padding:3px 5px;
+  }
+  .home-size-sub{
+    color:var(--text-faint);
+    font-size:10.5px;
+    margin:0 2px 0 3px;
+  }
+  .home-size-value{
+    min-width:38px;
+    text-align:center;
+    color:var(--text);
+    font-size:10.5px;
+    font-weight:600;
+  }
+  .home-size-group .btn-small{
+    min-width:24px;
+    width:24px;
+    height:24px;
+    padding:0;
+    line-height:1;
+  }
+
+  /* Home table sizing: controls change both readable type and row height. */
+  #dashboard[data-view="home"][data-home-table-size] table{
+    font-size:calc(13px * var(--home-table-scale));
+  }
+  #dashboard[data-view="home"][data-home-table-size] th{
+    font-size:calc(10.5px * var(--home-table-scale));
+    padding-top:calc(8px * var(--home-table-scale));
+    padding-bottom:calc(8px * var(--home-table-scale));
+  }
+  #dashboard[data-view="home"][data-home-table-size] td{
+    font-size:calc(13px * var(--home-table-scale));
+    padding-top:calc(8px * var(--home-table-scale));
+    padding-bottom:calc(8px * var(--home-table-scale));
+  }
+  #dashboard[data-view="home"] .col-chat{
+    width:min(var(--home-chat-width),calc(100% - 40px));
+  }
+
+  /* Light mode: replace dark-only message/status surfaces so text stays readable. */
+  html[data-theme="light"] .msg.user{
+    background:#eee7d7;
+    color:#24232a;
+  }
+  html[data-theme="light"] .msg.ai{
+    background:#f1f3f5;
+    border-color:#d6dbe2;
+    color:#24232a;
+  }
+  html[data-theme="light"] .ai-thinking{
+    background:#f5f6f8;
+    border-color:#d6dbe2;
+  }
+  html[data-theme="light"] .ai-thinking summary,
+  html[data-theme="light"] .ai-thinking-body{
+    color:#59616d;
+  }
+  html[data-theme="light"] .limit-toast{
+    background:#fff7df;
+    border-color:#d8b45b;
+    color:#75570b;
+    box-shadow:0 10px 30px rgba(20,20,20,.12);
+  }
+  html[data-theme="light"] .limit-toast .close{ color:#75570b; }
+  html[data-theme="light"] .chat-history-item:hover{ background:#f1f3f5; }
+  html[data-theme="light"] .chat-history-item.active{ background:#eee7d7; }
+  html[data-theme="light"] .nav-item:hover{ background:#f0f1f3; }
+  html[data-theme="light"] .nav-item.nav-notes:hover{ background:#f5eedc; }
+  html[data-theme="light"] .role-badge{ background:#edf0f3; color:#59616d; }
+  html[data-theme="light"] .role-leader{ background:#fff0c7; color:#8a6410; }
+  html[data-theme="light"] .role-coLeader{ background:#e7f2e7; color:#397044; }
+  html[data-theme="light"] .ws-inWar{ background:#fff0d2; color:#8a6410; }
+  html[data-theme="light"] .ws-warEnded,
+  html[data-theme="light"] .ws-none{ background:#edf0f3; color:#59616d; }
+  html[data-theme="light"] .ws-preparation{ background:#e8f3f7; color:#3c7286; }
 
   /* User-controlled typography. */
   :root{
@@ -1109,6 +1211,21 @@
 
   <div id="dashboard" data-view="home" hidden>
     <div class="refresh-row">
+      <div class="home-size-controls" id="homeSizeControls" aria-label="Home sizing controls">
+        <span class="home-size-label">Home size</span>
+        <span class="home-size-group" title="Resize Home tables">
+          <span class="home-size-sub">Tables</span>
+          <button class="btn-ghost btn-small" id="homeTableSizeDown" title="Make Home tables smaller">−</button>
+          <span class="home-size-value" id="homeTableSizeValue">100%</span>
+          <button class="btn-ghost btn-small" id="homeTableSizeUp" title="Make Home tables larger">+</button>
+        </span>
+        <span class="home-size-group" title="Resize Home AI chat">
+          <span class="home-size-sub">AI</span>
+          <button class="btn-ghost btn-small" id="homeChatSizeDown" title="Make Home AI chat narrower">−</button>
+          <span class="home-size-value" id="homeChatSizeValue">100%</span>
+          <button class="btn-ghost btn-small" id="homeChatSizeUp" title="Make Home AI chat wider">+</button>
+        </span>
+      </div>
       <button class="btn-ghost btn-small" id="collapseAllBtn">Collapse all panels</button>
       <button class="btn btn-ghost" id="refreshBtn">Refresh data</button>
     </div>
@@ -1214,6 +1331,55 @@ let memberSort = { key: 'rank', dir: 'asc' };
 let thLoading = false;
 
 const $ = sel => document.querySelector(sel);
+const HOME_TABLE_SIZES = [0.85, 1, 1.15, 1.3];
+const HOME_CHAT_SIZES = [560, 680, 800, 900];
+let homeTableSizeIndex = 1;
+let homeChatSizeIndex = 1;
+
+function applyHomeSizing(){
+  const dashboard = $('#dashboard');
+  if(!dashboard) return;
+  const tableScale = HOME_TABLE_SIZES[homeTableSizeIndex];
+  const chatWidth = HOME_CHAT_SIZES[homeChatSizeIndex];
+  dashboard.style.setProperty('--home-table-scale', String(tableScale));
+  dashboard.style.setProperty('--home-chat-width', chatWidth + 'px');
+  dashboard.dataset.homeTableSize = String(tableScale);
+  const tableValue = $('#homeTableSizeValue');
+  const chatValue = $('#homeChatSizeValue');
+  if(tableValue) tableValue.textContent = Math.round(tableScale * 100) + '%';
+  if(chatValue) chatValue.textContent = Math.round((chatWidth / 680) * 100) + '%';
+  try{
+    localStorage.setItem('warroom_home_table_size', String(homeTableSizeIndex));
+    localStorage.setItem('warroom_home_chat_size', String(homeChatSizeIndex));
+  }catch(e){}
+}
+
+function setupHomeSizing(){
+  try{
+    const savedTable = parseInt(localStorage.getItem('warroom_home_table_size'),10);
+    const savedChat = parseInt(localStorage.getItem('warroom_home_chat_size'),10);
+    if(Number.isInteger(savedTable)) homeTableSizeIndex = Math.min(Math.max(savedTable,0),HOME_TABLE_SIZES.length-1);
+    if(Number.isInteger(savedChat)) homeChatSizeIndex = Math.min(Math.max(savedChat,0),HOME_CHAT_SIZES.length-1);
+  }catch(e){}
+  $('#homeTableSizeDown')?.addEventListener('click',()=>{
+    homeTableSizeIndex = Math.max(0,homeTableSizeIndex-1);
+    applyHomeSizing();
+  });
+  $('#homeTableSizeUp')?.addEventListener('click',()=>{
+    homeTableSizeIndex = Math.min(HOME_TABLE_SIZES.length-1,homeTableSizeIndex+1);
+    applyHomeSizing();
+  });
+  $('#homeChatSizeDown')?.addEventListener('click',()=>{
+    homeChatSizeIndex = Math.max(0,homeChatSizeIndex-1);
+    applyHomeSizing();
+  });
+  $('#homeChatSizeUp')?.addEventListener('click',()=>{
+    homeChatSizeIndex = Math.min(HOME_CHAT_SIZES.length-1,homeChatSizeIndex+1);
+    applyHomeSizing();
+  });
+  applyHomeSizing();
+}
+
 const esc = s => (s ?? '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 // Expands CoC's compact "YYYYMMDDTHHMMSS.000Z" timestamp into a real ISO
@@ -1769,6 +1935,8 @@ document.querySelectorAll('.nav-item[data-view]').forEach(item => {
     closeNavSidebar();
   });
 });
+
+setupHomeSizing();
 
 // --- Draggable divider between the content column and the AI chat pane ---
 (function setupSplitResizer(){
